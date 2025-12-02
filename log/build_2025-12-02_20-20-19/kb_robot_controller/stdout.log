@@ -1,0 +1,24 @@
+running develop
+running egg_info
+creating kb_robot_controller.egg-info
+writing kb_robot_controller.egg-info/PKG-INFO
+writing dependency_links to kb_robot_controller.egg-info/dependency_links.txt
+writing entry points to kb_robot_controller.egg-info/entry_points.txt
+writing requirements to kb_robot_controller.egg-info/requires.txt
+writing top-level names to kb_robot_controller.egg-info/top_level.txt
+writing manifest file 'kb_robot_controller.egg-info/SOURCES.txt'
+reading manifest file 'kb_robot_controller.egg-info/SOURCES.txt'
+writing manifest file 'kb_robot_controller.egg-info/SOURCES.txt'
+running build_ext
+Creating /home/jetson/kb_ros2_wd/src/install/kb_robot_controller/lib/python3.10/site-packages/kb-robot-controller.egg-link (link to .)
+Installing kb_draw_circle script to /home/jetson/kb_ros2_wd/src/install/kb_robot_controller/lib/kb_robot_controller
+Installing kb_pose_subscriber script to /home/jetson/kb_ros2_wd/src/install/kb_robot_controller/lib/kb_robot_controller
+Installing kb_test_node script to /home/jetson/kb_ros2_wd/src/install/kb_robot_controller/lib/kb_robot_controller
+
+Installed /home/jetson/kb_ros2_wd/src/build/kb_robot_controller
+running symlink_data
+creating /home/jetson/kb_ros2_wd/src/install/kb_robot_controller/share/ament_index
+creating /home/jetson/kb_ros2_wd/src/install/kb_robot_controller/share/ament_index/resource_index
+creating /home/jetson/kb_ros2_wd/src/install/kb_robot_controller/share/ament_index/resource_index/packages
+symbolically linking /home/jetson/kb_ros2_wd/src/build/kb_robot_controller/resource/kb_robot_controller -> /home/jetson/kb_ros2_wd/src/install/kb_robot_controller/share/ament_index/resource_index/packages
+symbolically linking /home/jetson/kb_ros2_wd/src/build/kb_robot_controller/package.xml -> /home/jetson/kb_ros2_wd/src/install/kb_robot_controller/share/kb_robot_controller

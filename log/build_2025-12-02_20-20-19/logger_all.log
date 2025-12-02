@@ -1,0 +1,118 @@
+[0.307s] [34mcolcon[0m [1;30mDEBUG[0m [32mCommand line arguments: ['/usr/bin/colcon', 'build', '--symlink-install'][0m
+[0.307s] [34mcolcon[0m [1;30mDEBUG[0m [32mParsed command line arguments: Namespace(log_base=None, log_level=None, verb_name='build', build_base='build', install_base='install', merge_install=False, symlink_install=True, test_result_base=None, continue_on_error=False, executor='parallel', parallel_workers=6, event_handlers=None, ignore_user_meta=False, metas=['./colcon.meta'], base_paths=['.'], packages_ignore=None, packages_ignore_regex=None, paths=None, packages_up_to=None, packages_up_to_regex=None, packages_above=None, packages_above_and_dependencies=None, packages_above_depth=None, packages_select_by_dep=None, packages_skip_by_dep=None, packages_skip_up_to=None, packages_select_build_failed=False, packages_skip_build_finished=False, packages_select_test_failures=False, packages_skip_test_passed=False, packages_select=None, packages_skip=None, packages_select_regex=None, packages_skip_regex=None, packages_start=None, packages_end=None, allow_overriding=[], cmake_args=None, cmake_target=None, cmake_target_skip_unavailable=False, cmake_clean_cache=False, cmake_clean_first=False, cmake_force_configure=False, ament_cmake_args=None, catkin_cmake_args=None, catkin_skip_building_tests=False, mixin_files=None, mixin=None, verb_parser=<colcon_mixin.mixin.mixin_argument.MixinArgumentDecorator object at 0xffffbbea36d0>, verb_extension=<colcon_core.verb.build.BuildVerb object at 0xffffbbea2920>, main=<bound method BuildVerb.main of <colcon_core.verb.build.BuildVerb object at 0xffffbbea2920>>, mixin_verb=('build',))[0m
+[0.808s] [34mcolcon.colcon_core.package_discovery[0m [1;30mLevel 1[0m discover_packages(colcon_meta) check parameters
+[0.809s] [34mcolcon.colcon_core.package_discovery[0m [1;30mLevel 1[0m discover_packages(recursive) check parameters
+[0.809s] [34mcolcon.colcon_core.package_discovery[0m [1;30mLevel 1[0m discover_packages(ignore) check parameters
+[0.809s] [34mcolcon.colcon_core.package_discovery[0m [1;30mLevel 1[0m discover_packages(path) check parameters
+[0.809s] [34mcolcon.colcon_core.package_discovery[0m [1;30mLevel 1[0m discover_packages(colcon_meta) discover
+[0.809s] [34mcolcon.colcon_core.package_discovery[0m [1;30mLevel 1[0m discover_packages(recursive) discover
+[0.809s] [34mcolcon.colcon_core.package_discovery[0m [1;30mINFO[0m Crawling recursively for packages in '/home/jetson/kb_ros2_wd/src'
+[0.809s] [34mcolcon.colcon_core.package_identification[0m [1;30mLevel 1[0m _identify(.) by extensions ['ignore', 'ignore_ament_install']
+[0.810s] [34mcolcon.colcon_core.package_identification[0m [1;30mLevel 1[0m _identify(.) by extension 'ignore'
+[0.810s] [34mcolcon.colcon_core.package_identification[0m [1;30mLevel 1[0m _identify(.) by extension 'ignore_ament_install'
+[0.810s] [34mcolcon.colcon_core.package_identification[0m [1;30mLevel 1[0m _identify(.) by extensions ['colcon_pkg']
+[0.810s] [34mcolcon.colcon_core.package_identification[0m [1;30mLevel 1[0m _identify(.) by extension 'colcon_pkg'
+[0.810s] [34mcolcon.colcon_core.package_identification[0m [1;30mLevel 1[0m _identify(.) by extensions ['colcon_meta']
+[0.810s] [34mcolcon.colcon_core.package_identification[0m [1;30mLevel 1[0m _identify(.) by extension 'colcon_meta'
+[0.810s] [34mcolcon.colcon_core.package_identification[0m [1;30mLevel 1[0m _identify(.) by extensions ['ros']
+[0.810s] [34mcolcon.colcon_core.package_identification[0m [1;30mLevel 1[0m _identify(.) by extension 'ros'
+[0.859s] [34mcolcon.colcon_core.package_identification[0m [1;30mLevel 1[0m _identify(.) by extensions ['cmake', 'python']
+[0.859s] [34mcolcon.colcon_core.package_identification[0m [1;30mLevel 1[0m _identify(.) by extension 'cmake'
+[0.859s] [34mcolcon.colcon_core.package_identification[0m [1;30mLevel 1[0m _identify(.) by extension 'python'
+[0.860s] [34mcolcon.colcon_core.package_identification[0m [1;30mLevel 1[0m _identify(.) by extensions ['python_setup_py']
+[0.860s] [34mcolcon.colcon_core.package_identification[0m [1;30mLevel 1[0m _identify(.) by extension 'python_setup_py'
+[0.860s] [34mcolcon.colcon_core.package_identification[0m [1;30mLevel 1[0m _identify(build) by extensions ['ignore', 'ignore_ament_install']
+[0.860s] [34mcolcon.colcon_core.package_identification[0m [1;30mLevel 1[0m _identify(build) by extension 'ignore'
+[0.860s] [34mcolcon.colcon_core.package_identification[0m [1;30mLevel 1[0m _identify(build) ignored
+[0.861s] [34mcolcon.colcon_core.package_identification[0m [1;30mLevel 1[0m _identify(install) by extensions ['ignore', 'ignore_ament_install']
+[0.861s] [34mcolcon.colcon_core.package_identification[0m [1;30mLevel 1[0m _identify(install) by extension 'ignore'
+[0.861s] [34mcolcon.colcon_core.package_identification[0m [1;30mLevel 1[0m _identify(install) ignored
+[0.861s] [34mcolcon.colcon_core.package_identification[0m [1;30mLevel 1[0m _identify(kb_robot_controller) by extensions ['ignore', 'ignore_ament_install']
+[0.861s] [34mcolcon.colcon_core.package_identification[0m [1;30mLevel 1[0m _identify(kb_robot_controller) by extension 'ignore'
+[0.861s] [34mcolcon.colcon_core.package_identification[0m [1;30mLevel 1[0m _identify(kb_robot_controller) by extension 'ignore_ament_install'
+[0.862s] [34mcolcon.colcon_core.package_identification[0m [1;30mLevel 1[0m _identify(kb_robot_controller) by extensions ['colcon_pkg']
+[0.862s] [34mcolcon.colcon_core.package_identification[0m [1;30mLevel 1[0m _identify(kb_robot_controller) by extension 'colcon_pkg'
+[0.862s] [34mcolcon.colcon_core.package_identification[0m [1;30mLevel 1[0m _identify(kb_robot_controller) by extensions ['colcon_meta']
+[0.862s] [34mcolcon.colcon_core.package_identification[0m [1;30mLevel 1[0m _identify(kb_robot_controller) by extension 'colcon_meta'
+[0.862s] [34mcolcon.colcon_core.package_identification[0m [1;30mLevel 1[0m _identify(kb_robot_controller) by extensions ['ros']
+[0.862s] [34mcolcon.colcon_core.package_identification[0m [1;30mLevel 1[0m _identify(kb_robot_controller) by extension 'ros'
+[0.867s] [34mcolcon.colcon_core.package_identification[0m [1;30mDEBUG[0m [32mPackage 'kb_robot_controller' with type 'ros.ament_python' and name 'kb_robot_controller'[0m
+[0.868s] [34mcolcon.colcon_core.package_identification[0m [1;30mLevel 1[0m _identify(log) by extensions ['ignore', 'ignore_ament_install']
+[0.868s] [34mcolcon.colcon_core.package_identification[0m [1;30mLevel 1[0m _identify(log) by extension 'ignore'
+[0.868s] [34mcolcon.colcon_core.package_identification[0m [1;30mLevel 1[0m _identify(log) ignored
+[0.868s] [34mcolcon.colcon_core.package_discovery[0m [1;30mLevel 1[0m discover_packages(recursive) using defaults
+[0.868s] [34mcolcon.colcon_core.package_discovery[0m [1;30mLevel 1[0m discover_packages(ignore) discover
+[0.868s] [34mcolcon.colcon_core.package_discovery[0m [1;30mLevel 1[0m discover_packages(ignore) using defaults
+[0.868s] [34mcolcon.colcon_core.package_discovery[0m [1;30mLevel 1[0m discover_packages(path) discover
+[0.868s] [34mcolcon.colcon_core.package_discovery[0m [1;30mLevel 1[0m discover_packages(path) using defaults
+[0.902s] [34mcolcon.colcon_core.package_discovery[0m [1;30mLevel 1[0m discover_packages(prefix_path) check parameters
+[0.902s] [34mcolcon.colcon_core.package_discovery[0m [1;30mLevel 1[0m discover_packages(prefix_path) discover
+[0.905s] [34mcolcon.colcon_installed_package_information.package_discovery[0m [1;30mDEBUG[0m [32mFound 1 installed packages in /home/jetson/kb_ros2_wd/install[0m
+[0.906s] [34mcolcon.colcon_installed_package_information.package_discovery[0m [1;30mDEBUG[0m [32mFound 1 installed packages in /home/jetson/yahboom_ws/install[0m
+[0.908s] [34mcolcon.colcon_installed_package_information.package_discovery[0m [1;30mDEBUG[0m [32mFound 281 installed packages in /opt/ros/humble[0m
+[0.917s] [34mcolcon.colcon_core.package_discovery[0m [1;30mLevel 1[0m discover_packages(prefix_path) using defaults
+[1.008s] [34mcolcon.colcon_core.verb[0m [1;30mLevel 5[0m set package 'kb_robot_controller' build argument 'cmake_args' from command line to 'None'
+[1.008s] [34mcolcon.colcon_core.verb[0m [1;30mLevel 5[0m set package 'kb_robot_controller' build argument 'cmake_target' from command line to 'None'
+[1.008s] [34mcolcon.colcon_core.verb[0m [1;30mLevel 5[0m set package 'kb_robot_controller' build argument 'cmake_target_skip_unavailable' from command line to 'False'
+[1.008s] [34mcolcon.colcon_core.verb[0m [1;30mLevel 5[0m set package 'kb_robot_controller' build argument 'cmake_clean_cache' from command line to 'False'
+[1.008s] [34mcolcon.colcon_core.verb[0m [1;30mLevel 5[0m set package 'kb_robot_controller' build argument 'cmake_clean_first' from command line to 'False'
+[1.008s] [34mcolcon.colcon_core.verb[0m [1;30mLevel 5[0m set package 'kb_robot_controller' build argument 'cmake_force_configure' from command line to 'False'
+[1.008s] [34mcolcon.colcon_core.verb[0m [1;30mLevel 5[0m set package 'kb_robot_controller' build argument 'ament_cmake_args' from command line to 'None'
+[1.009s] [34mcolcon.colcon_core.verb[0m [1;30mLevel 5[0m set package 'kb_robot_controller' build argument 'catkin_cmake_args' from command line to 'None'
+[1.009s] [34mcolcon.colcon_core.verb[0m [1;30mLevel 5[0m set package 'kb_robot_controller' build argument 'catkin_skip_building_tests' from command line to 'False'
+[1.009s] [34mcolcon.colcon_core.verb[0m [1;30mDEBUG[0m [32mBuilding package 'kb_robot_controller' with the following arguments: {'ament_cmake_args': None, 'build_base': '/home/jetson/kb_ros2_wd/src/build/kb_robot_controller', 'catkin_cmake_args': None, 'catkin_skip_building_tests': False, 'cmake_args': None, 'cmake_clean_cache': False, 'cmake_clean_first': False, 'cmake_force_configure': False, 'cmake_target': None, 'cmake_target_skip_unavailable': False, 'install_base': '/home/jetson/kb_ros2_wd/src/install/kb_robot_controller', 'merge_install': False, 'path': '/home/jetson/kb_ros2_wd/src/kb_robot_controller', 'symlink_install': True, 'test_result_base': None}[0m
+[1.009s] [34mcolcon.colcon_core.executor[0m [1;30mINFO[0m Executing jobs using 'parallel' executor
+[1.019s] [34mcolcon.colcon_parallel_executor.executor.parallel[0m [1;30mDEBUG[0m [32mrun_until_complete[0m
+[1.020s] [34mcolcon.colcon_ros.task.ament_python.build[0m [1;30mINFO[0m Building ROS package in '/home/jetson/kb_ros2_wd/src/kb_robot_controller' with build type 'ament_python'
+[1.020s] [34mcolcon.colcon_core.shell[0m [1;30mLevel 1[0m create_environment_hook('kb_robot_controller', 'ament_prefix_path')
+[1.024s] [34mcolcon.colcon_core.plugin_system[0m [1;30mINFO[0m Skipping extension 'colcon_core.shell.bat': Not used on non-Windows systems
+[1.024s] [34mcolcon.colcon_core.shell[0m [1;30mINFO[0m Creating environment hook '/home/jetson/kb_ros2_wd/src/install/kb_robot_controller/share/kb_robot_controller/hook/ament_prefix_path.ps1'
+[1.054s] [34mcolcon.colcon_core.shell[0m [1;30mINFO[0m Creating environment descriptor '/home/jetson/kb_ros2_wd/src/install/kb_robot_controller/share/kb_robot_controller/hook/ament_prefix_path.dsv'
+[1.056s] [34mcolcon.colcon_core.shell[0m [1;30mINFO[0m Creating environment hook '/home/jetson/kb_ros2_wd/src/install/kb_robot_controller/share/kb_robot_controller/hook/ament_prefix_path.sh'
+[1.057s] [34mcolcon.colcon_core.shell[0m [1;30mINFO[0m Skip shell extension 'powershell' for command environment: Not usable outside of PowerShell
+[1.057s] [34mcolcon.colcon_core.shell[0m [1;30mDEBUG[0m [32mSkip shell extension 'dsv' for command environment[0m
+[1.946s] [34mcolcon.colcon_core.task.python.build[0m [1;30mINFO[0m Building Python package in '/home/jetson/kb_ros2_wd/src/kb_robot_controller'
+[1.947s] [34mcolcon.colcon_core.shell[0m [1;30mINFO[0m Skip shell extension 'powershell' for command environment: Not usable outside of PowerShell
+[1.947s] [34mcolcon.colcon_core.shell[0m [1;30mDEBUG[0m [32mSkip shell extension 'dsv' for command environment[0m
+[3.311s] [34mcolcon.colcon_core.event_handler.log_command[0m [1;30mDEBUG[0m [32mInvoking command in '/home/jetson/kb_ros2_wd/src/build/kb_robot_controller': PYTHONPATH=/home/jetson/kb_ros2_wd/src/build/kb_robot_controller/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/jetson/kb_ros2_wd/src/install/kb_robot_controller/lib/python3.10/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py develop --editable --build-directory /home/jetson/kb_ros2_wd/src/build/kb_robot_controller/build --no-deps symlink_data[0m
+[5.391s] [34mcolcon.colcon_core.shell[0m [1;30mLevel 1[0m create_environment_hook('kb_robot_controller', 'pythonpath_develop')
+[5.392s] [34mcolcon.colcon_core.shell[0m [1;30mINFO[0m Creating environment hook '/home/jetson/kb_ros2_wd/src/build/kb_robot_controller/share/kb_robot_controller/hook/pythonpath_develop.ps1'
+[5.393s] [34mcolcon.colcon_core.event_handler.log_command[0m [1;30mDEBUG[0m [32mInvoked command in '/home/jetson/kb_ros2_wd/src/build/kb_robot_controller' returned '0': PYTHONPATH=/home/jetson/kb_ros2_wd/src/build/kb_robot_controller/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/jetson/kb_ros2_wd/src/install/kb_robot_controller/lib/python3.10/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py develop --editable --build-directory /home/jetson/kb_ros2_wd/src/build/kb_robot_controller/build --no-deps symlink_data[0m
+[5.467s] [34mcolcon.colcon_core.shell[0m [1;30mINFO[0m Creating environment descriptor '/home/jetson/kb_ros2_wd/src/build/kb_robot_controller/share/kb_robot_controller/hook/pythonpath_develop.dsv'
+[5.469s] [34mcolcon.colcon_core.shell[0m [1;30mINFO[0m Creating environment hook '/home/jetson/kb_ros2_wd/src/build/kb_robot_controller/share/kb_robot_controller/hook/pythonpath_develop.sh'
+[5.475s] [34mcolcon.colcon_core.environment[0m [1;30mLevel 1[0m checking '/home/jetson/kb_ros2_wd/src/install/kb_robot_controller' for CMake module files
+[5.477s] [34mcolcon.colcon_core.environment[0m [1;30mLevel 1[0m checking '/home/jetson/kb_ros2_wd/src/install/kb_robot_controller' for CMake config files
+[5.480s] [34mcolcon.colcon_core.environment[0m [1;30mLevel 1[0m checking '/home/jetson/kb_ros2_wd/src/install/kb_robot_controller/lib'
+[5.486s] [34mcolcon.colcon_core.environment[0m [1;30mLevel 1[0m checking '/home/jetson/kb_ros2_wd/src/install/kb_robot_controller/bin'
+[5.486s] [34mcolcon.colcon_core.environment[0m [1;30mLevel 1[0m checking '/home/jetson/kb_ros2_wd/src/install/kb_robot_controller/lib/pkgconfig/kb_robot_controller.pc'
+[5.487s] [34mcolcon.colcon_core.environment[0m [1;30mLevel 1[0m checking '/home/jetson/kb_ros2_wd/src/install/kb_robot_controller/lib/python3.10/site-packages'
+[5.487s] [34mcolcon.colcon_core.shell[0m [1;30mLevel 1[0m create_environment_hook('kb_robot_controller', 'pythonpath')
+[5.488s] [34mcolcon.colcon_core.shell[0m [1;30mINFO[0m Creating environment hook '/home/jetson/kb_ros2_wd/src/install/kb_robot_controller/share/kb_robot_controller/hook/pythonpath.ps1'
+[5.489s] [34mcolcon.colcon_core.shell[0m [1;30mINFO[0m Creating environment descriptor '/home/jetson/kb_ros2_wd/src/install/kb_robot_controller/share/kb_robot_controller/hook/pythonpath.dsv'
+[5.491s] [34mcolcon.colcon_core.shell[0m [1;30mINFO[0m Creating environment hook '/home/jetson/kb_ros2_wd/src/install/kb_robot_controller/share/kb_robot_controller/hook/pythonpath.sh'
+[5.492s] [34mcolcon.colcon_core.environment[0m [1;30mLevel 1[0m checking '/home/jetson/kb_ros2_wd/src/install/kb_robot_controller/bin'
+[5.502s] [34mcolcon.colcon_core.environment[0m [1;30mLevel 1[0m create_environment_scripts_only(kb_robot_controller)
+[5.504s] [34mcolcon.colcon_core.shell[0m [1;30mINFO[0m Creating package script '/home/jetson/kb_ros2_wd/src/install/kb_robot_controller/share/kb_robot_controller/package.ps1'
+[5.506s] [34mcolcon.colcon_core.shell[0m [1;30mINFO[0m Creating package descriptor '/home/jetson/kb_ros2_wd/src/install/kb_robot_controller/share/kb_robot_controller/package.dsv'
+[5.507s] [34mcolcon.colcon_core.shell[0m [1;30mINFO[0m Creating package script '/home/jetson/kb_ros2_wd/src/install/kb_robot_controller/share/kb_robot_controller/package.sh'
+[5.509s] [34mcolcon.colcon_core.shell[0m [1;30mINFO[0m Creating package script '/home/jetson/kb_ros2_wd/src/install/kb_robot_controller/share/kb_robot_controller/package.bash'
+[5.510s] [34mcolcon.colcon_core.shell[0m [1;30mINFO[0m Creating package script '/home/jetson/kb_ros2_wd/src/install/kb_robot_controller/share/kb_robot_controller/package.zsh'
+[5.512s] [34mcolcon.colcon_core.environment[0m [1;30mLevel 1[0m create_file_with_runtime_dependencies(/home/jetson/kb_ros2_wd/src/install/kb_robot_controller/share/colcon-core/packages/kb_robot_controller)
+[5.516s] [34mcolcon.colcon_parallel_executor.executor.parallel[0m [1;30mDEBUG[0m [32mclosing loop[0m
+[5.517s] [34mcolcon.colcon_parallel_executor.executor.parallel[0m [1;30mDEBUG[0m [32mloop closed[0m
+[5.517s] [34mcolcon.colcon_parallel_executor.executor.parallel[0m [1;30mDEBUG[0m [32mrun_until_complete finished with '0'[0m
+[5.519s] [34mcolcon.colcon_core.event_reactor[0m [1;30mDEBUG[0m [32mjoining thread[0m
+[5.529s] [34mcolcon.colcon_core.plugin_system[0m [1;30mINFO[0m Skipping extension 'colcon_notification.desktop_notification.terminal_notifier': Not used on non-Darwin systems
+[5.530s] [34mcolcon.colcon_core.plugin_system[0m [1;30mINFO[0m Skipping extension 'colcon_notification.desktop_notification.win32': Not used on non-Windows systems
+[5.530s] [34mcolcon.colcon_notification.desktop_notification[0m [1;30mINFO[0m Sending desktop notification using 'notify2'
+[5.605s] [34mcolcon.colcon_core.event_reactor[0m [1;30mDEBUG[0m [32mjoined thread[0m
+[5.606s] [34mcolcon.colcon_core.shell[0m [1;30mINFO[0m Creating prefix script '/home/jetson/kb_ros2_wd/src/install/local_setup.ps1'
+[5.608s] [34mcolcon.colcon_core.shell[0m [1;30mINFO[0m Creating prefix util module '/home/jetson/kb_ros2_wd/src/install/_local_setup_util_ps1.py'
+[5.611s] [34mcolcon.colcon_core.shell[0m [1;30mINFO[0m Creating prefix chain script '/home/jetson/kb_ros2_wd/src/install/setup.ps1'
+[5.614s] [34mcolcon.colcon_core.shell[0m [1;30mINFO[0m Creating prefix script '/home/jetson/kb_ros2_wd/src/install/local_setup.sh'
+[5.615s] [34mcolcon.colcon_core.shell[0m [1;30mINFO[0m Creating prefix util module '/home/jetson/kb_ros2_wd/src/install/_local_setup_util_sh.py'
+[5.616s] [34mcolcon.colcon_core.shell[0m [1;30mINFO[0m Creating prefix chain script '/home/jetson/kb_ros2_wd/src/install/setup.sh'
+[5.624s] [34mcolcon.colcon_core.shell[0m [1;30mINFO[0m Creating prefix script '/home/jetson/kb_ros2_wd/src/install/local_setup.bash'
+[5.625s] [34mcolcon.colcon_core.shell[0m [1;30mINFO[0m Creating prefix chain script '/home/jetson/kb_ros2_wd/src/install/setup.bash'
+[5.639s] [34mcolcon.colcon_core.shell[0m [1;30mINFO[0m Creating prefix script '/home/jetson/kb_ros2_wd/src/install/local_setup.zsh'
+[5.640s] [34mcolcon.colcon_core.shell[0m [1;30mINFO[0m Creating prefix chain script '/home/jetson/kb_ros2_wd/src/install/setup.zsh'

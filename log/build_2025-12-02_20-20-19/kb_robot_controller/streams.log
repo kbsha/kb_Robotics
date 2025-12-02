@@ -1,0 +1,26 @@
+[2.279s] Invoking command in '/home/jetson/kb_ros2_wd/src/build/kb_robot_controller': PYTHONPATH=/home/jetson/kb_ros2_wd/src/build/kb_robot_controller/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/jetson/kb_ros2_wd/src/install/kb_robot_controller/lib/python3.10/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py develop --editable --build-directory /home/jetson/kb_ros2_wd/src/build/kb_robot_controller/build --no-deps symlink_data
+[3.296s] running develop
+[4.207s] running egg_info
+[4.207s] creating kb_robot_controller.egg-info
+[4.225s] writing kb_robot_controller.egg-info/PKG-INFO
+[4.225s] writing dependency_links to kb_robot_controller.egg-info/dependency_links.txt
+[4.225s] writing entry points to kb_robot_controller.egg-info/entry_points.txt
+[4.226s] writing requirements to kb_robot_controller.egg-info/requires.txt
+[4.226s] writing top-level names to kb_robot_controller.egg-info/top_level.txt
+[4.226s] writing manifest file 'kb_robot_controller.egg-info/SOURCES.txt'
+[4.230s] reading manifest file 'kb_robot_controller.egg-info/SOURCES.txt'
+[4.231s] writing manifest file 'kb_robot_controller.egg-info/SOURCES.txt'
+[4.234s] running build_ext
+[4.235s] Creating /home/jetson/kb_ros2_wd/src/install/kb_robot_controller/lib/python3.10/site-packages/kb-robot-controller.egg-link (link to .)
+[4.249s] Installing kb_draw_circle script to /home/jetson/kb_ros2_wd/src/install/kb_robot_controller/lib/kb_robot_controller
+[4.250s] Installing kb_pose_subscriber script to /home/jetson/kb_ros2_wd/src/install/kb_robot_controller/lib/kb_robot_controller
+[4.250s] Installing kb_test_node script to /home/jetson/kb_ros2_wd/src/install/kb_robot_controller/lib/kb_robot_controller
+[4.250s] 
+[4.250s] Installed /home/jetson/kb_ros2_wd/src/build/kb_robot_controller
+[4.251s] running symlink_data
+[4.251s] creating /home/jetson/kb_ros2_wd/src/install/kb_robot_controller/share/ament_index
+[4.251s] creating /home/jetson/kb_ros2_wd/src/install/kb_robot_controller/share/ament_index/resource_index
+[4.260s] creating /home/jetson/kb_ros2_wd/src/install/kb_robot_controller/share/ament_index/resource_index/packages
+[4.260s] symbolically linking /home/jetson/kb_ros2_wd/src/build/kb_robot_controller/resource/kb_robot_controller -> /home/jetson/kb_ros2_wd/src/install/kb_robot_controller/share/ament_index/resource_index/packages
+[4.260s] symbolically linking /home/jetson/kb_ros2_wd/src/build/kb_robot_controller/package.xml -> /home/jetson/kb_ros2_wd/src/install/kb_robot_controller/share/kb_robot_controller
+[4.362s] Invoked command in '/home/jetson/kb_ros2_wd/src/build/kb_robot_controller' returned '0': PYTHONPATH=/home/jetson/kb_ros2_wd/src/build/kb_robot_controller/prefix_override:/usr/lib/python3/dist-packages/colcon_core/task/python/colcon_distutils_commands:/home/jetson/kb_ros2_wd/src/install/kb_robot_controller/lib/python3.10/site-packages:${PYTHONPATH} /usr/bin/python3 -W ignore:setup.py install is deprecated -W ignore:easy_install command is deprecated setup.py develop --editable --build-directory /home/jetson/kb_ros2_wd/src/build/kb_robot_controller/build --no-deps symlink_data
