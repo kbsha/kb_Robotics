@@ -21,5 +21,5 @@ def main(args=None):
 
     rclpy.shutdown()  # Shutdown the ROS client library
 
-if __name__ == '__main__':  # Corrected if condition
+if __name__ == '__main__':  # Corrected if condition if we want to run directly from terminal
     main()

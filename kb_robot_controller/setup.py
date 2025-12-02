@@ -20,7 +20,9 @@ setup(
     tests_require=['pytest'],
     entry_points={
         'console_scripts': [
-            "kb_test_node = kb_robot_controller.kb_first_node:main"
+            "kb_test_node = kb_robot_controller.kb_first_node:main",
+            "kb_pose_subscriber = kb_robot_controller.kb_pose_subscriber:main",
+            "kb_draw_circle = kb_robot_controller.kb_draw_circle:main"
         ],
     },
 )
