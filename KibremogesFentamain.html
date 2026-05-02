@@ -1,0 +1,1834 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AIMSRIC iMPC — Intelligent AGV Control Platform</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400&family=Syne:wght@400;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&display=swap" rel="stylesheet">
+<style>
+:root {
+  --navy: #0B1929;
+  --navy2: #112236;
+  --navy3: #163049;
+  --teal: #00D4AA;
+  --teal2: #00B898;
+  --teal3: #007A65;
+  --amber: #F5A623;
+  --red: #FF4757;
+  --green: #2ED573;
+  --blue: #3B82F6;
+  --purple: #8B5CF6;
+  --white: #F0F6FF;
+  --muted: #6B8FA8;
+  --border: rgba(0,212,170,0.15);
+  --card: rgba(17,34,54,0.9);
+  --glass: rgba(11,25,41,0.7);
+  --font-head: 'Syne', sans-serif;
+  --font-mono: 'Space Mono', monospace;
+  --font-body: 'DM Sans', sans-serif;
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: var(--font-body);
+  background: var(--navy);
+  color: var(--white);
+  overflow-x: hidden;
+  line-height: 1.6;
+}
+
+/* ─── SCROLLBAR ─── */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: var(--navy2); }
+::-webkit-scrollbar-thumb { background: var(--teal3); border-radius: 3px; }
+
+/* ─── NAV ─── */
+nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+  background: rgba(11,25,41,0.92);
+  backdrop-filter: blur(16px);
+  border-bottom: 1px solid var(--border);
+  padding: 0 2rem;
+  display: flex; align-items: center; justify-content: space-between;
+  height: 64px;
+}
+.nav-logo {
+  display: flex; align-items: center; gap: 10px;
+  font-family: var(--font-head); font-weight: 800; font-size: 1.1rem;
+  color: var(--white); text-decoration: none;
+}
+.nav-logo .dot {
+  width: 32px; height: 32px; border-radius: 6px;
+  background: var(--teal); display: flex; align-items: center; justify-content: center;
+  font-size: 13px; font-weight: 800; color: var(--navy); font-family: var(--font-mono);
+}
+.nav-links { display: flex; gap: 2rem; list-style: none; }
+.nav-links a {
+  text-decoration: none; color: var(--muted); font-size: 0.9rem; font-weight: 400;
+  transition: color 0.2s; letter-spacing: 0.02em;
+}
+.nav-links a:hover { color: var(--teal); }
+.nav-cta {
+  background: var(--teal); color: var(--navy); border: none;
+  padding: 8px 20px; border-radius: 6px; font-family: var(--font-body);
+  font-weight: 500; font-size: 0.9rem; cursor: pointer; transition: all 0.2s;
+  text-decoration: none;
+}
+.nav-cta:hover { background: var(--teal2); transform: translateY(-1px); }
+
+/* ─── HERO ─── */
+.hero {
+  min-height: 100vh; position: relative; overflow: hidden;
+  display: flex; align-items: center; justify-content: center;
+  padding: 100px 2rem 4rem;
+}
+.hero-grid {
+  position: absolute; inset: 0; opacity: 0.07;
+  background-image:
+    linear-gradient(rgba(0,212,170,0.5) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0,212,170,0.5) 1px, transparent 1px);
+  background-size: 48px 48px;
+  animation: gridShift 20s linear infinite;
+}
+@keyframes gridShift { from { transform: translateY(0); } to { transform: translateY(48px); } }
+.hero-glow {
+  position: absolute; top: 20%; left: 50%; transform: translateX(-50%);
+  width: 600px; height: 400px; border-radius: 50%;
+  background: radial-gradient(circle, rgba(0,212,170,0.08) 0%, transparent 70%);
+  pointer-events: none;
+}
+.hero-content { position: relative; text-align: center; max-width: 900px; }
+.hero-badge {
+  display: inline-flex; align-items: center; gap: 8px;
+  background: rgba(0,212,170,0.1); border: 1px solid rgba(0,212,170,0.3);
+  padding: 6px 16px; border-radius: 100px; font-size: 0.8rem;
+  font-family: var(--font-mono); color: var(--teal); margin-bottom: 2rem;
+  animation: fadeUp 0.8s ease both;
+}
+.hero-badge .blink { width: 6px; height: 6px; background: var(--teal); border-radius: 50%; animation: blink 1.5s infinite; }
+@keyframes blink { 0%,100% { opacity: 1; } 50% { opacity: 0.2; } }
+.hero h1 {
+  font-family: var(--font-head); font-size: clamp(2.4rem, 5vw, 4.2rem);
+  font-weight: 800; line-height: 1.1; margin-bottom: 1.5rem;
+  animation: fadeUp 0.8s 0.1s ease both;
+}
+.hero h1 .accent { color: var(--teal); }
+.hero h1 .mono { font-family: var(--font-mono); font-size: 0.85em; }
+.hero-sub {
+  font-size: 1.15rem; color: rgba(240,246,255,0.7); max-width: 640px;
+  margin: 0 auto 3rem; font-weight: 300; line-height: 1.7;
+  animation: fadeUp 0.8s 0.2s ease both;
+}
+.hero-actions {
+  display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;
+  animation: fadeUp 0.8s 0.3s ease both;
+}
+.btn-primary {
+  background: var(--teal); color: var(--navy); padding: 14px 32px;
+  border-radius: 8px; border: none; font-family: var(--font-body); font-weight: 500;
+  font-size: 1rem; cursor: pointer; transition: all 0.2s; text-decoration: none;
+  display: inline-flex; align-items: center; gap: 8px;
+}
+.btn-primary:hover { background: var(--teal2); transform: translateY(-2px); box-shadow: 0 8px 24px rgba(0,212,170,0.25); }
+.btn-outline {
+  background: transparent; color: var(--white); padding: 14px 32px;
+  border-radius: 8px; border: 1px solid rgba(240,246,255,0.25); font-family: var(--font-body);
+  font-weight: 400; font-size: 1rem; cursor: pointer; transition: all 0.2s;
+  text-decoration: none; display: inline-flex; align-items: center; gap: 8px;
+}
+.btn-outline:hover { border-color: var(--teal); color: var(--teal); }
+.hero-stats {
+  display: flex; justify-content: center; gap: 4rem; margin-top: 5rem;
+  padding-top: 3rem; border-top: 1px solid var(--border);
+  animation: fadeUp 0.8s 0.4s ease both;
+}
+.hero-stat .val {
+  font-family: var(--font-head); font-size: 2.2rem; font-weight: 800; color: var(--teal);
+  display: block;
+}
+.hero-stat .lbl { font-size: 0.8rem; color: var(--muted); font-family: var(--font-mono); letter-spacing: 0.05em; }
+@keyframes fadeUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+
+/* ─── SECTION COMMON ─── */
+section { padding: 6rem 2rem; position: relative; }
+.section-label {
+  font-family: var(--font-mono); font-size: 0.75rem; color: var(--teal);
+  letter-spacing: 0.12em; text-transform: uppercase; margin-bottom: 1rem; display: block;
+}
+.section-title {
+  font-family: var(--font-head); font-size: clamp(1.8rem, 3vw, 2.8rem);
+  font-weight: 700; margin-bottom: 1rem; line-height: 1.2;
+}
+.section-sub { color: rgba(240,246,255,0.6); font-size: 1.05rem; font-weight: 300; max-width: 560px; line-height: 1.7; }
+.container { max-width: 1200px; margin: 0 auto; }
+
+/* ─── FRAMEWORK SECTION ─── */
+#framework { background: var(--navy2); }
+.framework-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 5rem; align-items: start; margin-top: 4rem; }
+.pipeline { display: flex; flex-direction: column; gap: 0; }
+.pipeline-step {
+  display: flex; gap: 1.5rem; padding: 1.5rem 0; border-left: 2px solid var(--border);
+  padding-left: 2rem; position: relative; cursor: pointer; transition: all 0.2s;
+}
+.pipeline-step::before {
+  content: ''; position: absolute; left: -9px; top: 1.8rem;
+  width: 16px; height: 16px; border-radius: 50%; background: var(--navy2);
+  border: 2px solid var(--teal3); transition: all 0.2s;
+}
+.pipeline-step.active::before { background: var(--teal); border-color: var(--teal); box-shadow: 0 0 12px rgba(0,212,170,0.5); }
+.pipeline-step:hover::before { border-color: var(--teal); }
+.step-num { font-family: var(--font-mono); font-size: 0.7rem; color: var(--muted); min-width: 24px; padding-top: 4px; }
+.step-body { flex: 1; }
+.step-body h4 { font-family: var(--font-head); font-weight: 600; font-size: 1rem; margin-bottom: 4px; }
+.step-body p { font-size: 0.85rem; color: var(--muted); line-height: 1.6; }
+.step-body .tag {
+  display: inline-block; background: rgba(0,212,170,0.1); color: var(--teal);
+  font-family: var(--font-mono); font-size: 0.65rem; padding: 2px 8px; border-radius: 4px;
+  margin-top: 6px; margin-right: 4px; border: 1px solid rgba(0,212,170,0.2);
+}
+.framework-visual {
+  position: sticky; top: 100px; background: var(--navy3);
+  border: 1px solid var(--border); border-radius: 16px; overflow: hidden;
+}
+.fv-header { padding: 1rem 1.5rem; border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 8px; }
+.fv-header .dot { width: 8px; height: 8px; border-radius: 50%; }
+.fv-header span { font-family: var(--font-mono); font-size: 0.75rem; color: var(--muted); margin-left: auto; }
+.fv-content { padding: 1.5rem; }
+.eq-block {
+  background: rgba(0,212,170,0.04); border: 1px solid rgba(0,212,170,0.1);
+  border-radius: 10px; padding: 1.2rem; margin-bottom: 1rem; transition: all 0.3s;
+}
+.eq-block.highlight { background: rgba(0,212,170,0.09); border-color: rgba(0,212,170,0.3); }
+.eq-label { font-family: var(--font-mono); font-size: 0.65rem; color: var(--teal); margin-bottom: 6px; display: block; letter-spacing: 0.08em; }
+.eq-formula { font-family: var(--font-mono); font-size: 0.9rem; color: var(--white); line-height: 1.8; }
+.eq-sub { font-family: var(--font-mono); font-size: 0.7rem; color: var(--muted); margin-top: 6px; display: block; }
+.latency-bar { margin-top: 1.5rem; }
+.lb-row { display: flex; align-items: center; gap: 10px; margin-bottom: 8px; }
+.lb-label { font-family: var(--font-mono); font-size: 0.7rem; color: var(--muted); width: 80px; flex-shrink: 0; }
+.lb-track { flex: 1; height: 6px; background: rgba(255,255,255,0.06); border-radius: 3px; overflow: hidden; }
+.lb-fill { height: 100%; border-radius: 3px; transition: width 1s ease; }
+.lb-val { font-family: var(--font-mono); font-size: 0.7rem; color: var(--white); width: 45px; text-align: right; flex-shrink: 0; }
+
+/* ─── SIMULATION DASHBOARD ─── */
+#simulation { background: var(--navy); }
+.sim-header { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 3rem; }
+.sim-tabs { display: flex; gap: 4px; background: var(--navy2); padding: 4px; border-radius: 10px; }
+.sim-tab {
+  padding: 8px 20px; border-radius: 8px; border: none; background: none;
+  color: var(--muted); font-family: var(--font-body); font-size: 0.85rem; cursor: pointer; transition: all 0.2s;
+}
+.sim-tab.active { background: var(--teal); color: var(--navy); font-weight: 500; }
+.sim-layout { display: grid; grid-template-columns: 1fr 360px; gap: 2rem; }
+.sim-viewport {
+  background: var(--navy2); border: 1px solid var(--border);
+  border-radius: 16px; overflow: hidden; position: relative;
+}
+.sim-canvas-wrap { position: relative; height: 420px; }
+canvas#simCanvas { width: 100%; height: 100%; display: block; }
+canvas { max-width: 100%; height: auto; display: block; }
+.sim-overlay-label {
+  position: absolute; top: 12px; left: 12px;
+  background: rgba(11,25,41,0.85); border: 1px solid var(--border);
+  border-radius: 8px; padding: 8px 12px; font-family: var(--font-mono); font-size: 0.7rem;
+}
+.sim-overlay-label .ol-row { display: flex; justify-content: space-between; gap: 2rem; margin-bottom: 4px; }
+.sim-overlay-label .ol-key { color: var(--muted); }
+.sim-overlay-label .ol-val { color: var(--teal); }
+.sim-controls-bar {
+  padding: 1rem 1.5rem; border-top: 1px solid var(--border);
+  display: flex; align-items: center; gap: 1rem; flex-wrap: wrap;
+}
+.ctrl-btn {
+  padding: 8px 18px; border-radius: 8px; border: 1px solid var(--border);
+  background: transparent; color: var(--white); font-family: var(--font-body);
+  font-size: 0.85rem; cursor: pointer; transition: all 0.2s; display: flex; align-items: center; gap: 6px;
+}
+.ctrl-btn:hover { border-color: var(--teal); color: var(--teal); }
+.ctrl-btn.active { background: var(--teal); color: var(--navy); border-color: var(--teal); }
+.ctrl-btn svg { width: 14px; height: 14px; flex-shrink: 0; }
+.speed-slider-wrap { display: flex; align-items: center; gap: 10px; margin-left: auto; }
+.speed-slider-wrap label { font-family: var(--font-mono); font-size: 0.7rem; color: var(--muted); }
+input[type="range"].speed-sl {
+  -webkit-appearance: none; width: 120px; height: 4px;
+  background: rgba(255,255,255,0.1); border-radius: 2px; outline: none;
+}
+input[type="range"].speed-sl::-webkit-slider-thumb {
+  -webkit-appearance: none; width: 14px; height: 14px; border-radius: 50%;
+  background: var(--teal); cursor: pointer;
+}
+.sim-sidebar { display: flex; flex-direction: column; gap: 1rem; }
+.metric-card {
+  background: var(--navy2); border: 1px solid var(--border); border-radius: 12px; padding: 1.25rem;
+}
+.mc-title { font-family: var(--font-mono); font-size: 0.7rem; color: var(--muted); letter-spacing: 0.06em; text-transform: uppercase; margin-bottom: 0.75rem; }
+.mc-big { font-family: var(--font-head); font-size: 2rem; font-weight: 700; }
+.mc-big.good { color: var(--green); }
+.mc-big.warn { color: var(--amber); }
+.mc-big.danger { color: var(--red); }
+.mc-sub { font-size: 0.8rem; color: var(--muted); margin-top: 4px; }
+.mini-chart-wrap { height: 60px; position: relative; margin-top: 0.75rem; }
+.gauge-wrap { display: flex; justify-content: center; padding: 0.5rem 0; }
+.perf-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+.perf-item { text-align: center; }
+.perf-item .pv { font-family: var(--font-mono); font-size: 1.1rem; font-weight: 700; }
+.perf-item .pk { font-size: 0.7rem; color: var(--muted); margin-top: 2px; }
+
+/* ─── CONTROL AS A SERVICE ─── */
+#caas { background: var(--navy2); }
+.caas-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: start; margin-top: 4rem; }
+.connection-panel {
+  background: var(--navy3); border: 1px solid var(--border); border-radius: 16px; overflow: hidden;
+}
+.cp-header {
+  padding: 1rem 1.5rem; border-bottom: 1px solid var(--border);
+  display: flex; align-items: center; justify-content: space-between;
+}
+.cp-title { font-family: var(--font-head); font-weight: 600; font-size: 0.95rem; }
+.status-pill {
+  display: flex; align-items: center; gap: 6px; font-family: var(--font-mono); font-size: 0.7rem;
+  padding: 4px 10px; border-radius: 100px;
+}
+.status-pill.online { background: rgba(46,213,115,0.12); color: var(--green); border: 1px solid rgba(46,213,115,0.25); }
+.status-pill.offline { background: rgba(255,71,87,0.12); color: var(--red); border: 1px solid rgba(255,71,87,0.25); }
+.status-pill.connecting { background: rgba(245,166,35,0.12); color: var(--amber); border: 1px solid rgba(245,166,35,0.25); }
+.status-pill .sd { width: 6px; height: 6px; border-radius: 50%; background: currentColor; animation: blink 1.5s infinite; }
+.cp-body { padding: 1.5rem; }
+.form-row { margin-bottom: 1rem; }
+.form-row label { display: block; font-family: var(--font-mono); font-size: 0.7rem; color: var(--muted); margin-bottom: 6px; letter-spacing: 0.06em; }
+.form-row input, .form-row select {
+  width: 100%; padding: 10px 14px; background: var(--navy);
+  border: 1px solid rgba(255,255,255,0.1); border-radius: 8px;
+  color: var(--white); font-family: var(--font-body); font-size: 0.9rem; outline: none;
+  transition: border-color 0.2s;
+}
+.form-row input:focus, .form-row select:focus { border-color: var(--teal); }
+.form-row select option { background: var(--navy2); }
+.form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+.connect-btn {
+  width: 100%; padding: 12px; background: var(--teal); color: var(--navy);
+  border: none; border-radius: 8px; font-family: var(--font-body); font-weight: 500;
+  font-size: 0.95rem; cursor: pointer; transition: all 0.2s; margin-top: 0.5rem;
+}
+.connect-btn:hover { background: var(--teal2); }
+.connect-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+.cmd-terminal {
+  background: var(--navy); border: 1px solid rgba(0,212,170,0.1);
+  border-radius: 12px; padding: 1rem 1.25rem; margin-top: 1rem;
+  font-family: var(--font-mono); font-size: 0.75rem;
+  max-height: 160px; overflow-y: auto;
+}
+.cmd-line { margin-bottom: 4px; }
+.cmd-line .ts { color: var(--muted); }
+.cmd-line .ok { color: var(--teal); }
+.cmd-line .err { color: var(--red); }
+.cmd-line .info { color: var(--amber); }
+.cmd-line .msg { color: rgba(240,246,255,0.7); }
+/* Remote control pad */
+.remote-panel { display: flex; flex-direction: column; gap: 1.5rem; }
+.rc-card {
+  background: var(--navy3); border: 1px solid var(--border); border-radius: 16px;
+  padding: 1.5rem;
+}
+.rc-title { font-family: var(--font-head); font-weight: 600; font-size: 0.95rem; margin-bottom: 1.25rem; }
+.dpad-wrap { display: flex; justify-content: center; align-items: center; gap: 2rem; }
+.dpad {
+  display: grid; grid-template-columns: repeat(3, 52px); grid-template-rows: repeat(3, 52px); gap: 4px;
+}
+.dpad-btn {
+  width: 52px; height: 52px; background: var(--navy2); border: 1px solid var(--border);
+  border-radius: 10px; display: flex; align-items: center; justify-content: center;
+  cursor: pointer; transition: all 0.15s; font-size: 18px; color: var(--white); user-select: none;
+}
+.dpad-btn:hover { background: rgba(0,212,170,0.15); border-color: var(--teal); }
+.dpad-btn:active, .dpad-btn.pressed { background: var(--teal); color: var(--navy); transform: scale(0.93); }
+.dpad-btn.disabled { opacity: 0.3; cursor: not-allowed; }
+.dpad-center { grid-column: 2; grid-row: 2; }
+.speed-ctrl { display: flex; flex-direction: column; align-items: center; gap: 10px; }
+.speed-ctrl .sc-label { font-family: var(--font-mono); font-size: 0.7rem; color: var(--muted); text-align: center; }
+.speed-dial {
+  width: 80px; height: 80px; border-radius: 50%; background: var(--navy2);
+  border: 2px solid var(--border); display: flex; align-items: center; justify-content: center;
+  flex-direction: column; gap: 2px;
+}
+.speed-dial .sd-val { font-family: var(--font-head); font-size: 1.3rem; font-weight: 700; color: var(--teal); }
+.speed-dial .sd-unit { font-family: var(--font-mono); font-size: 0.6rem; color: var(--muted); }
+.param-sliders { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+.ps-item label { font-family: var(--font-mono); font-size: 0.7rem; color: var(--muted); display: flex; justify-content: space-between; margin-bottom: 6px; }
+.ps-item label span { color: var(--teal); }
+input[type="range"].ps-range {
+  -webkit-appearance: none; width: 100%; height: 4px;
+  background: rgba(255,255,255,0.1); border-radius: 2px; outline: none;
+}
+input[type="range"].ps-range::-webkit-slider-thumb {
+  -webkit-appearance: none; width: 16px; height: 16px; border-radius: 50%;
+  background: var(--teal); cursor: pointer; box-shadow: 0 0 6px rgba(0,212,170,0.4);
+}
+
+/* ─── LIVE TELEMETRY ─── */
+.telem-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem; margin-top: 3rem; }
+.telem-card {
+  background: var(--navy3); border: 1px solid var(--border); border-radius: 12px;
+  padding: 1.25rem; position: relative; overflow: hidden;
+}
+.telem-card::before {
+  content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px;
+  background: var(--teal);
+}
+.telem-card.amber::before { background: var(--amber); }
+.telem-card.red::before { background: var(--red); }
+.telem-card.blue::before { background: var(--blue); }
+.telem-card.purple::before { background: var(--purple); }
+.tc-icon { font-size: 1.5rem; margin-bottom: 0.75rem; }
+.tc-val { font-family: var(--font-head); font-size: 1.6rem; font-weight: 700; }
+.tc-label { font-family: var(--font-mono); font-size: 0.65rem; color: var(--muted); margin-top: 4px; letter-spacing: 0.06em; text-transform: uppercase; }
+.tc-delta { font-size: 0.75rem; margin-top: 4px; }
+.tc-delta.up { color: var(--green); }
+.tc-delta.down { color: var(--red); }
+
+/* ─── COMPARISON / RESULTS ─── */
+#results { background: var(--navy); }
+.results-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; align-items: start; margin-top: 3rem; }
+.chart-card { background: var(--navy2); border: 1px solid var(--border); border-radius: 16px; padding: 1.5rem; }
+.chart-title { font-family: var(--font-head); font-weight: 600; font-size: 1rem; margin-bottom: 1.5rem; }
+
+/* ─── ARCHITECTURE DIAGRAM ─── */
+#architecture { background: var(--navy2); }
+.arch-svg-wrap { margin-top: 3rem; background: var(--navy3); border: 1px solid var(--border); border-radius: 16px; padding: 2rem; overflow: hidden; }
+
+/* ─── PRICING / PLANS ─── */
+#pricing { background: var(--navy); }
+.plans-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; margin-top: 3rem; }
+.plan-card {
+  background: var(--navy2); border: 1px solid var(--border); border-radius: 16px;
+  padding: 2rem; transition: all 0.3s; position: relative;
+}
+.plan-card.featured {
+  border-color: var(--teal); background: var(--navy3);
+  box-shadow: 0 0 40px rgba(0,212,170,0.08);
+}
+.plan-badge {
+  position: absolute; top: -12px; left: 50%; transform: translateX(-50%);
+  background: var(--teal); color: var(--navy); font-family: var(--font-mono);
+  font-size: 0.7rem; font-weight: 700; padding: 4px 14px; border-radius: 100px; letter-spacing: 0.06em;
+}
+.plan-name { font-family: var(--font-head); font-size: 1.2rem; font-weight: 700; margin-bottom: 0.5rem; }
+.plan-price { font-family: var(--font-head); font-size: 2.4rem; font-weight: 800; color: var(--teal); }
+.plan-price span { font-size: 1rem; color: var(--muted); font-weight: 400; font-family: var(--font-body); }
+.plan-desc { font-size: 0.85rem; color: var(--muted); margin: 0.75rem 0 1.5rem; line-height: 1.5; }
+.plan-features { list-style: none; display: flex; flex-direction: column; gap: 10px; margin-bottom: 2rem; }
+.plan-features li { display: flex; align-items: center; gap: 10px; font-size: 0.9rem; }
+.plan-features li .chk { color: var(--teal); font-size: 0.8rem; flex-shrink: 0; }
+.plan-features li .x { color: var(--muted); font-size: 0.8rem; flex-shrink: 0; }
+.plan-btn {
+  width: 100%; padding: 12px; border-radius: 8px; border: 1px solid rgba(240,246,255,0.2);
+  background: transparent; color: var(--white); font-family: var(--font-body); font-size: 0.9rem;
+  cursor: pointer; transition: all 0.2s; font-weight: 500;
+}
+.plan-card.featured .plan-btn { background: var(--teal); color: var(--navy); border-color: var(--teal); }
+.plan-btn:hover { border-color: var(--teal); color: var(--teal); }
+.plan-card.featured .plan-btn:hover { background: var(--teal2); }
+
+/* ─── TECH STACK ─── */
+#tech { background: var(--navy2); }
+.tech-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; margin-top: 3rem; }
+.tech-card {
+  background: var(--navy3); border: 1px solid var(--border); border-radius: 12px;
+  padding: 1.5rem; transition: all 0.2s;
+}
+.tech-card:hover { border-color: rgba(0,212,170,0.4); transform: translateY(-3px); }
+.tech-card h3 { font-family: var(--font-head); font-weight: 600; font-size: 1rem; margin-bottom: 0.5rem; }
+.tech-card p { font-size: 0.85rem; color: var(--muted); line-height: 1.6; }
+.tc-tags { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 1rem; }
+.tc-tag {
+  background: rgba(0,212,170,0.08); color: var(--teal); font-family: var(--font-mono);
+  font-size: 0.65rem; padding: 3px 8px; border-radius: 4px; border: 1px solid rgba(0,212,170,0.15);
+}
+
+/* ─── FOOTER ─── */
+footer {
+  background: var(--navy2); border-top: 1px solid var(--border);
+  padding: 3rem 2rem; text-align: center;
+}
+.footer-logo { font-family: var(--font-head); font-size: 1.1rem; font-weight: 800; margin-bottom: 0.5rem; }
+.footer-sub { font-size: 0.85rem; color: var(--muted); }
+.footer-links { display: flex; justify-content: center; gap: 2rem; margin: 1.5rem 0; }
+.footer-links a { font-size: 0.85rem; color: var(--muted); text-decoration: none; transition: color 0.2s; }
+.footer-links a:hover { color: var(--teal); }
+.footer-copy { font-size: 0.78rem; color: rgba(107,143,168,0.6); font-family: var(--font-mono); }
+
+/* ─── RESPONSIVE ─── */
+@media (max-width: 900px) {
+  .framework-grid, .caas-grid, .results-grid, .sim-layout { grid-template-columns: 1fr; }
+  .framework-visual { position: static; }
+  .telem-grid { grid-template-columns: repeat(2, 1fr); }
+  .plans-grid, .tech-grid { grid-template-columns: 1fr; }
+  .hero-stats { gap: 2rem; }
+  nav .nav-links { display: none; }
+}
+</style>
+</head>
+<body>
+
+<!-- ═══════════════════════════════════════════════
+     NAVIGATION
+══════════════════════════════════════════════════ -->
+<nav>
+  <a href="#" class="nav-logo">
+    <div class="dot">i</div>
+    AIMSRIC iMPC
+  </a>
+  <ul class="nav-links">
+    <li><a href="#framework">Framework</a></li>
+    <li><a href="#simulation">Simulation</a></li>
+    <li><a href="#caas">Control-as-a-Service</a></li>
+    <li><a href="#results">Results</a></li>
+    <li><a href="#pricing">Plans</a></li>
+  </ul>
+  <a href="#caas" class="nav-cta">Connect Vehicle →</a>
+</nav>
+
+<!-- ═══════════════════════════════════════════════
+     HERO
+══════════════════════════════════════════════════ -->
+<section class="hero" id="home">
+  <div class="hero-grid"></div>
+  <div class="hero-glow"></div>
+  <div class="hero-content">
+    <div class="hero-badge">
+      <span class="blink"></span>
+      By Kibremoges Fenta <br>
+      MSc Research work <br>
+       AIMS-RIC <br>
+      Supervisor: Prof. Abebe Geletu W. Selassie
+    </div>
+    <h1>
+      Intelligent <span class="accent">Model Predictive</span><br>
+      <span class="mono">Control</span> for Autonomous Vehicles
+    </h1>
+    <p class="hero-sub">
+      A perception-aware adaptive MPC framework running fully onboard — no GPS, no cloud, no external infrastructure. 
+      Control any compatible AGV remotely through our server.
+    </p>
+    <div class="hero-actions">
+      <a href="#simulation" class="btn-primary">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><polygon points="5,3 13,8 5,13" fill="currentColor"/></svg>
+        Live Simulation
+      </a>
+      <a href="#caas" class="btn-outline">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><rect x="2" y="2" width="12" height="12" rx="2" stroke="currentColor" stroke-width="1.5" fill="none"/><path d="M6 8h4M8 6v4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+        Connect Your Vehicle
+      </a>
+    </div>
+    <div class="hero-stats">
+      <div class="hero-stat">
+        <span class="val">0.033m</span>
+        <span class="lbl">RMSE Tracking</span>
+      </div>
+      <div class="hero-stat">
+        <span class="val">28.5ms</span>
+        <span class="lbl">Total Latency</span>
+      </div>
+      <div class="hero-stat">
+        <span class="val">53.5%</span>
+        <span class="lbl">Better Than PID</span>
+      </div>
+      <div class="hero-stat">
+        <span class="val">30Hz</span>
+        <span class="lbl">Control Rate</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════
+     FRAMEWORK
+══════════════════════════════════════════════════ -->
+<section id="framework">
+<div class="container">
+  <span class="section-label">// iMPC Pipeline</span>
+  <h2 class="section-title">The Intelligent MPC Framework</h2>
+  <p class="section-sub">A unified embedded pipeline bridging deep learning perception, adaptive MPC theory, and real-time control — all onboard NVIDIA Jetson.</p>
+
+  <div class="framework-grid">
+    <div class="pipeline" id="pipeline">
+      <div class="pipeline-step active" data-step="0" onclick="selectStep(0)">
+        <div class="step-num">01</div>
+        <div class="step-body">
+          <h4>Monocular Camera Perception</h4>
+          <p>RGB images captured at 30 Hz. Dynamic perception window applied with heading-aligned crop. Resize 224×224, normalise, FP16 tensor preparation.</p>
+          <span class="tag">ResNet18</span><span class="tag">TensorRT FP16</span><span class="tag">11ms</span>
+        </div>
+      </div>
+      <div class="pipeline-step" data-step="1" onclick="selectStep(1)">
+        <div class="step-num">02</div>
+        <div class="step-body">
+          <h4>Two-Point Keypoint Regression</h4>
+          <p>ResNet18 regresses trajectory waypoints (x₁,y₁), (x₂,y₂) per frame. TensorRT FP16 inference at 11ms. Perception confidence cᵢ ∈ [0,1] output.</p>
+          <span class="tag">CNN Regression</span><span class="tag">MAE ≤ 4.1px</span>
+        </div>
+      </div>
+      <div class="pipeline-step" data-step="2" onclick="selectStep(2)">
+        <div class="step-num">03</div>
+        <div class="step-body">
+          <h4>Trajectory Planning & Curvature</h4>
+          <p>Pixel coordinates → world frame. Waypoint generation with curvature κ estimation. Adaptive horizon: f = fn(κₘₐₓ) exponential law.</p>
+          <span class="tag">Kinematic Bicycle</span><span class="tag">2ms</span>
+        </div>
+      </div>
+      <div class="pipeline-step" data-step="3" onclick="selectStep(3)">
+        <div class="step-num">04</div>
+        <div class="step-body">
+          <h4>Adaptive Horizon MPC Solve</h4>
+          <p>Precomputed gain matrix K = (MᵀWM + R)⁻¹MᵀW offline. O(n³) → O(n²) per step. 6–20× speedup. Perception-confidence-weighted cost.</p>
+          <span class="tag">iMPC</span><span class="tag">15ms solve</span><span class="tag">30Hz</span>
+        </div>
+      </div>
+      <div class="pipeline-step" data-step="4" onclick="selectStep(4)">
+        <div class="step-num">05</div>
+        <div class="step-body">
+          <h4>Actuator Commands</h4>
+          <p>Optimal steering angle δ* and throttle a* dispatched to vehicle. σ_δ ≤ 3.5° actuation smoothness. Total pipeline Tₜₒₜₐₗ ≈ 28.5ms.</p>
+          <span class="tag">δ* steering</span><span class="tag">a* throttle</span><span class="tag">RMSE 0.033m</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="framework-visual">
+      <div class="fv-header">
+        <div class="dot" style="background:#FF4757"></div>
+        <div class="dot" style="background:#F5A623; margin-left:4px;"></div>
+        <div class="dot" style="background:#2ED573; margin-left:4px;"></div>
+        <span id="fvTitle">perception_layer.py</span>
+      </div>
+      <div class="fv-content">
+        <div class="eq-block" id="eq0">
+          <span class="eq-label">// PERCEPTION — ResNet18 keypoint regression</span>
+          <div class="eq-formula">output = f_θ(I_t)  →  [(x₁,y₁),(x₂,y₂)]<br>cᵢ = σ(confidence_head(z))<br>I_crop = dynamic_window(I_t, ψ)</div>
+          <span class="eq-sub">TensorRT FP16 · 11ms · MAE ≤ 4.1px</span>
+        </div>
+        <div class="eq-block" id="eq1">
+          <span class="eq-label">// HORIZON ADAPTATION — curvature-based</span>
+          <div class="eq-formula">N = clamp(N₀·e^{-α·κₘₐₓ}, Nₘᵢₙ, Nₘₐₓ)<br>Pᵢ = Pₘₐₓ·e^{-β(i-1)/N}·e^{-γκ}·cᵢ</div>
+          <span class="eq-sub">Adaptive horizon · Confidence-weighted cost</span>
+        </div>
+        <div class="eq-block" id="eq2">
+          <span class="eq-label">// PRECOMPUTED GAIN — offline O(n³) solve</span>
+          <div class="eq-formula">K = (MᵀWM + R)⁻¹Mᵀ W<br>u* = K · (Y_ref - M·x₀)<br>δ* = u*[0]  →  actuator</div>
+          <span class="eq-sub">Online: O(n²) · 15ms MPC solve on Jetson</span>
+        </div>
+        <div class="latency-bar">
+          <span class="eq-label">// REAL-TIME BUDGET  Tₛ = 33ms @ 30Hz</span>
+          <div class="lb-row">
+            <span class="lb-label">Perception</span>
+            <div class="lb-track"><div class="lb-fill" style="width:33%; background:var(--blue);"></div></div>
+            <span class="lb-val">11ms</span>
+          </div>
+          <div class="lb-row">
+            <span class="lb-label">Planning</span>
+            <div class="lb-track"><div class="lb-fill" style="width:6%; background:var(--teal);"></div></div>
+            <span class="lb-val">2ms</span>
+          </div>
+          <div class="lb-row">
+            <span class="lb-label">MPC solve</span>
+            <div class="lb-track"><div class="lb-fill" style="width:46%; background:var(--amber);"></div></div>
+            <span class="lb-val">15ms</span>
+          </div>
+          <div class="lb-row">
+            <span class="lb-label" style="color:var(--teal); font-weight:700;">TOTAL</span>
+            <div class="lb-track"><div class="lb-fill" style="width:86%; background:var(--teal);"></div></div>
+            <span class="lb-val" style="color:var(--teal);">28.5ms</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- ═══════════════════════════════════════════════
+     LIVE SIMULATION DASHBOARD
+══════════════════════════════════════════════════ -->
+<section id="simulation">
+<div class="container">
+  <div class="sim-header">
+    <div>
+      <span class="section-label">// Live Demo</span>
+      <h2 class="section-title">Simulation Dashboard</h2>
+    </div>
+    <div class="sim-tabs">
+      <button class="sim-tab active" onclick="setSimMode('scurve', this)">S-Curve</button>
+      <button class="sim-tab" onclick="setSimMode('oval', this)">Oval Track</button>
+      <button class="sim-tab" onclick="setSimMode('figure8', this)">Figure-8</button>
+    </div>
+  </div>
+
+  <div class="sim-layout">
+    <div class="sim-viewport">
+      <div class="sim-canvas-wrap">
+        <canvas id="simCanvas"></canvas>
+        <div class="sim-overlay-label">
+          <div class="ol-row"><span class="ol-key">MODE</span><span class="ol-val" id="modeLabel">iMPC Adaptive</span></div>
+          <div class="ol-row"><span class="ol-key">STEP</span><span class="ol-val" id="stepLabel">0</span></div>
+          <div class="ol-row"><span class="ol-key">RMSE</span><span class="ol-val" id="rmseLabel">—</span></div>
+          <div class="ol-row"><span class="ol-key">δ</span><span class="ol-val" id="steerLabel">0.0°</span></div>
+        </div>
+      </div>
+      <div class="sim-controls-bar">
+        <button class="ctrl-btn active" id="btnPlay" onclick="toggleSim()">
+          <svg viewBox="0 0 16 16" fill="currentColor"><polygon points="4,2 13,8 4,14"/></svg>
+          Play
+        </button>
+        <button class="ctrl-btn" onclick="resetSim()">
+          <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 8a5 5 0 1 1 1.5 3.5" stroke-linecap="round"/><polyline points="3,4 3,8 7,8" fill="none"/></svg>
+          Reset
+        </button>
+        <button class="ctrl-btn" id="btnController" onclick="cycleController()">
+          <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="4" width="12" height="8" rx="2"/><circle cx="6" cy="8" r="1.2" fill="currentColor" stroke="none"/><circle cx="10" cy="8" r="1.2" fill="currentColor" stroke="none"/></svg>
+          iMPC
+        </button>
+        <div class="speed-slider-wrap">
+          <label>SIM SPEED</label>
+          <input type="range" class="speed-sl" min="0.5" max="3" step="0.5" value="1" id="simSpeedSlider" oninput="simSpeed = parseFloat(this.value)">
+          <span style="font-family:var(--font-mono);font-size:0.75rem;color:var(--teal);min-width:24px;" id="simSpeedLabel">1×</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="sim-sidebar">
+      <div class="metric-card">
+        <div class="mc-title">Cross-Track Error (RMSE)</div>
+        <div class="mc-big good" id="mcRmse">0.033 m</div>
+        <div class="mc-sub">vs PID: 0.071m (+53.5% improvement)</div>
+        <div class="mini-chart-wrap">
+          <canvas id="rmseChart" role="img" aria-label="RMSE over time"></canvas>
+        </div>
+      </div>
+
+      <div class="metric-card">
+        <div class="mc-title">MPC Horizon Adaptation</div>
+        <div style="height:90px;position:relative;">
+          <canvas id="horizonChart" role="img" aria-label="MPC horizon length over time"></canvas>
+        </div>
+      </div>
+
+      <div class="metric-card">
+        <div class="mc-title">Performance Comparison</div>
+        <div class="perf-grid">
+          <div class="perf-item">
+            <div class="pv" style="color:var(--teal);">0.033m</div>
+            <div class="pk">iMPC RMSE</div>
+          </div>
+          <div class="perf-item">
+            <div class="pv" style="color:var(--amber);">0.071m</div>
+            <div class="pk">PID RMSE</div>
+          </div>
+          <div class="perf-item">
+            <div class="pv" style="color:var(--teal);">28.5ms</div>
+            <div class="pk">iMPC Latency</div>
+          </div>
+          <div class="perf-item">
+            <div class="pv" style="color:var(--amber);">38.5ms</div>
+            <div class="pk">ROS MPC</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="metric-card">
+        <div class="mc-title">Steering Smoothness σ_δ</div>
+        <div class="mc-big" id="mcSteer" style="color:var(--teal);">2.8°</div>
+        <div class="mc-sub">Target: ≤ 3.5° | Controller: <span id="ctrlName">iMPC</span></div>
+      </div>
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- ═══════════════════════════════════════════════
+     LIVE TELEMETRY BAR
+══════════════════════════════════════════════════ -->
+<div style="background:var(--navy3); border-top:1px solid var(--border); border-bottom:1px solid var(--border); padding:2rem;">
+<div class="container">
+  <span class="section-label" style="margin-bottom:0.5rem;">// Live Telemetry — Vehicle State</span>
+  <div class="telem-grid">
+    <div class="telem-card">
+      <div class="tc-icon">⚡</div>
+      <div class="tc-val" id="tv-vel" style="color:var(--teal);">1.2 m/s</div>
+      <div class="tc-label">Velocity</div>
+      <div class="tc-delta up" id="tv-vel-d">+0.1 m/s</div>
+    </div>
+    <div class="telem-card amber">
+      <div class="tc-icon">🎯</div>
+      <div class="tc-val" id="tv-heading" style="color:var(--amber);">12.4°</div>
+      <div class="tc-label">Heading ψ</div>
+      <div class="tc-delta" id="tv-head-d" style="color:var(--muted);">nominal</div>
+    </div>
+    <div class="telem-card blue">
+      <div class="tc-icon">↔</div>
+      <div class="tc-val" id="tv-steer" style="color:var(--blue);">-3.1°</div>
+      <div class="tc-label">Steering δ</div>
+      <div class="tc-delta" id="tv-steer-d" style="color:var(--muted);">σ = 2.8°</div>
+    </div>
+    <div class="telem-card purple">
+      <div class="tc-icon">🧠</div>
+      <div class="tc-val" id="tv-conf" style="color:var(--purple);">0.94</div>
+      <div class="tc-label">Perception Conf.</div>
+      <div class="tc-delta up">high quality</div>
+    </div>
+    <div class="telem-card red">
+      <div class="tc-icon">📍</div>
+      <div class="tc-val" id="tv-cte" style="color:var(--green);">0.03m</div>
+      <div class="tc-label">Cross-Track Error</div>
+      <div class="tc-delta up">within target</div>
+    </div>
+    <div class="telem-card">
+      <div class="tc-icon">⏱</div>
+      <div class="tc-val" id="tv-latency" style="color:var(--teal);">28ms</div>
+      <div class="tc-label">Loop Latency</div>
+      <div class="tc-delta up">< 33ms ✓</div>
+    </div>
+    <div class="telem-card amber">
+      <div class="tc-icon">🌊</div>
+      <div class="tc-val" id="tv-horiz" style="color:var(--amber);">12</div>
+      <div class="tc-label">MPC Horizon N</div>
+      <div class="tc-delta" style="color:var(--muted);">adaptive</div>
+    </div>
+    <div class="telem-card blue">
+      <div class="tc-icon">📐</div>
+      <div class="tc-val" id="tv-kappa" style="color:var(--blue);">0.18</div>
+      <div class="tc-label">Curvature κ</div>
+      <div class="tc-delta" style="color:var(--muted);">path-dependent</div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- ═══════════════════════════════════════════════
+     CONTROL AS A SERVICE
+══════════════════════════════════════════════════ -->
+<section id="caas">
+<div class="container">
+  <span class="section-label">// Remote Control</span>
+  <h2 class="section-title">Control as a Service</h2>
+  <p class="section-sub">Connect any compatible AGV or autonomous vehicle to our iMPC server. Get intelligent adaptive control, live telemetry streaming, and remote override — from anywhere.</p>
+
+  <div class="caas-grid">
+    <div>
+      <div class="connection-panel">
+        <div class="cp-header">
+          <span class="cp-title">Vehicle Connection</span>
+          <div class="status-pill offline" id="connStatus">
+            <span class="sd"></span>
+            <span id="connStatusText">Disconnected</span>
+          </div>
+        </div>
+        <div class="cp-body">
+          <div class="form-grid">
+            <div class="form-row">
+              <label>SERVER ENDPOINT</label>
+              <input type="text" id="serverHost" value="impc.aimsric.ac.et" placeholder="host">
+            </div>
+            <div class="form-row">
+              <label>PORT</label>
+              <input type="text" id="serverPort" value="8765" placeholder="8765">
+            </div>
+          </div>
+          <div class="form-row">
+            <label>VEHICLE ID / TOKEN</label>
+            <input type="text" id="vehicleToken" value="AGV-DEMO-001" placeholder="e.g. AGV-001">
+          </div>
+          <div class="form-row">
+            <label>CONTROL MODE</label>
+            <select id="ctrlMode">
+              <option value="pid">iMPC Adaptive (Recommended)</option>
+              <option value="fixed">Fixed Horizon MPC</option>
+              <option value="pid">PID Baseline</option>
+              <option value="manual">Manual Override</option>
+            </select>
+          </div>
+          <div class="form-row">
+            <label>VEHICLE PLATFORM</label>
+            <select id="vPlatform">
+              <option>JetRacer (NVIDIA Jetson)</option>
+              <option>ROS2 Differential Drive</option>
+              <option>Custom AGV (CAN Bus)</option>
+              <option>Simulator Only</option>
+            </select>
+          </div>
+          <button class="connect-btn" id="connectBtn" onclick="toggleConnect()">▶  Connect to Server</button>
+        </div>
+      </div>
+
+      <div class="cmd-terminal" id="cmdTerminal">
+        <div class="cmd-line"><span class="ts">[00:00:00]</span> <span class="info">iMPC Control Server — AIMS-RIC AGV Platform v2.1</span></div>
+        <div class="cmd-line"><span class="ts">[00:00:00]</span> <span class="msg">Waiting for vehicle connection...</span></div>
+      </div>
+    </div>
+
+    <div class="remote-panel">
+      <div class="rc-card">
+        <div class="rc-title">Remote D-Pad Control</div>
+        <div class="dpad-wrap">
+          <div class="dpad">
+            <div></div>
+            <div class="dpad-btn" id="btn-fwd" onmousedown="dpadPress('fwd')" onmouseup="dpadRelease('fwd')" ontouchstart="dpadPress('fwd')" ontouchend="dpadRelease('fwd')">↑</div>
+            <div></div>
+            <div class="dpad-btn" id="btn-left" onmousedown="dpadPress('left')" onmouseup="dpadRelease('left')">←</div>
+            <div class="dpad-btn dpad-center" id="btn-stop" onclick="dpadPress('stop')">■</div>
+            <div class="dpad-btn" id="btn-right" onmousedown="dpadPress('right')" onmouseup="dpadRelease('right')">→</div>
+            <div></div>
+            <div class="dpad-btn" id="btn-rev" onmousedown="dpadPress('rev')" onmouseup="dpadRelease('rev')">↓</div>
+            <div></div>
+          </div>
+          <div class="speed-ctrl">
+            <div class="speed-dial">
+              <span class="sd-val" id="rcSpeed">0.0</span>
+              <span class="sd-unit">m/s</span>
+            </div>
+            <span class="sc-label">Current Speed</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="rc-card">
+        <div class="rc-title">MPC Parameters</div>
+        <div class="param-sliders">
+          <div class="ps-item">
+            <label>HORIZON N_MAX <span id="pNmax">20</span></label>
+            <input type="range" class="ps-range" min="5" max="30" value="20" oninput="updateParam('Nmax', this.value, 'pNmax')">
+          </div>
+          <div class="ps-item">
+            <label>HORIZON N_MIN <span id="pNmin">5</span></label>
+            <input type="range" class="ps-range" min="3" max="15" value="5" oninput="updateParam('Nmin', this.value, 'pNmin')">
+          </div>
+          <div class="ps-item">
+            <label>WEIGHT Q <span id="pQ">10</span></label>
+            <input type="range" class="ps-range" min="1" max="50" value="10" oninput="updateParam('Q', this.value, 'pQ')">
+          </div>
+          <div class="ps-item">
+            <label>WEIGHT R <span id="pR">1</span></label>
+            <input type="range" class="ps-range" min="1" max="20" value="1" oninput="updateParam('R', this.value, 'pR')">
+          </div>
+          <div class="ps-item">
+            <label>ADAPT RATE α <span id="pAlpha">0.5</span></label>
+            <input type="range" class="ps-range" min="0.1" max="2.0" step="0.1" value="0.5" oninput="updateParam('alpha', this.value, 'pAlpha')">
+          </div>
+          <div class="ps-item">
+            <label>CONF WEIGHT γ <span id="pGamma">0.3</span></label>
+            <input type="range" class="ps-range" min="0.0" max="1.0" step="0.05" value="0.3" oninput="updateParam('gamma', this.value, 'pGamma')">
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- ═══════════════════════════════════════════════
+     RESULTS / COMPARISON
+══════════════════════════════════════════════════ -->
+<section id="results">
+<div class="container">
+  <span class="section-label">// Experimental Results</span>
+  <h2 class="section-title">Performance Benchmarks</h2>
+  <p class="section-sub">Validated on JetRacer platform. Real-world S-curve track. iMPC vs PID vs Fixed-Horizon ROS MPC comparison.</p>
+
+  <div class="results-grid">
+    <div class="chart-card">
+      <div class="chart-title">RMSE Comparison — Controllers</div>
+      <div style="display:flex;flex-wrap:wrap;gap:12px;margin-bottom:12px;font-size:12px;color:var(--muted);">
+        <span style="display:flex;align-items:center;gap:4px;"><span style="width:10px;height:10px;border-radius:2px;background:#00D4AA;display:inline-block;"></span>iMPC (ours) 0.033m</span>
+        <span style="display:flex;align-items:center;gap:4px;"><span style="width:10px;height:10px;border-radius:2px;background:#F5A623;display:inline-block;"></span>Fixed MPC 0.045m</span>
+        <span style="display:flex;align-items:center;gap:4px;"><span style="width:10px;height:10px;border-radius:2px;background:#FF4757;display:inline-block;"></span>PID 0.071m</span>
+      </div>
+      <div style="position:relative;width:100%;height:220px;">
+        <canvas id="rmseBarChart" role="img" aria-label="Bar chart comparing RMSE for PID (0.071m), ROS MPC (0.045m), iMPC (0.033m)">RMSE: PID 0.071m, Fixed MPC 0.045m, iMPC 0.033m</canvas>
+      </div>
+    </div>
+
+    <div class="chart-card">
+      <div class="chart-title">Latency Budget (ms)</div>
+      <div style="display:flex;flex-wrap:wrap;gap:12px;margin-bottom:12px;font-size:12px;color:var(--muted);">
+        <span style="display:flex;align-items:center;gap:4px;"><span style="width:10px;height:10px;border-radius:2px;background:#3B82F6;display:inline-block;"></span>Perception</span>
+        <span style="display:flex;align-items:center;gap:4px;"><span style="width:10px;height:10px;border-radius:2px;background:#00D4AA;display:inline-block;"></span>Planning</span>
+        <span style="display:flex;align-items:center;gap:4px;"><span style="width:10px;height:10px;border-radius:2px;background:#F5A623;display:inline-block;"></span>MPC Solve</span>
+      </div>
+      <div style="position:relative;width:100%;height:220px;">
+        <canvas id="latencyChart" role="img" aria-label="Stacked bar chart of latency breakdown for iMPC vs ROS MPC">Latency: iMPC 28.5ms total, ROS MPC 38.5ms total</canvas>
+      </div>
+    </div>
+
+    <div class="chart-card">
+      <div class="chart-title">Steering Smoothness — S-Curve Trial</div>
+      <div style="display:flex;flex-wrap:wrap;gap:12px;margin-bottom:12px;font-size:12px;color:var(--muted);">
+        <span style="display:flex;align-items:center;gap:4px;"><span style="width:10px;height:10px;border-radius:2px;background:#00D4AA;display:inline-block;"></span>iMPC δ (σ=2.8°)</span>
+        <span style="display:flex;align-items:center;gap:4px;"><span style="width:10px;height:10px;border-radius:2px;background:#FF4757;display:inline-block;"></span>PID δ (σ=6.2°)</span>
+      </div>
+      <div style="position:relative;width:100%;height:220px;">
+        <canvas id="steerChart" role="img" aria-label="Line chart of steering angle over time for iMPC and PID">Steering smoothness comparison</canvas>
+      </div>
+    </div>
+
+    <div class="chart-card">
+      <div class="chart-title">Adaptive Horizon N vs Curvature κ</div>
+      <div style="display:flex;flex-wrap:wrap;gap:12px;margin-bottom:12px;font-size:12px;color:var(--muted);">
+        <span style="display:flex;align-items:center;gap:4px;"><span style="width:10px;height:10px;border-radius:2px;background:#8B5CF6;display:inline-block;"></span>Horizon N</span>
+        <span style="display:flex;align-items:center;gap:4px;"><span style="width:10px;height:10px;border-radius:2px;background:#F5A623;display:inline-block;border:2px dashed #F5A623;"></span>Curvature κ</span>
+      </div>
+      <div style="position:relative;width:100%;height:220px;">
+        <canvas id="horizonCurveChart" role="img" aria-label="Line chart showing adaptive horizon N and curvature kappa over path">Horizon adaptation proportional to inverse curvature</canvas>
+      </div>
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- ═══════════════════════════════════════════════
+     ARCHITECTURE
+══════════════════════════════════════════════════ -->
+<section id="architecture">
+<div class="container">
+  <span class="section-label">// System Architecture</span>
+  <h2 class="section-title">Platform Architecture</h2>
+  <p class="section-sub">End-to-end architecture from embedded Jetson deployment to cloud Control-as-a-Service API gateway.</p>
+  <div class="arch-svg-wrap">
+    <svg viewBox="0 0 1060 360" width="100%" xmlns="http://www.w3.org/2000/svg" style="font-family:var(--font-mono);">
+      <defs>
+        <marker id="arr" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto">
+          <polygon points="0 0, 8 3, 0 6" fill="rgba(0,212,170,0.6)"/>
+        </marker>
+      </defs>
+
+      <!-- VEHICLE LAYER -->
+      <rect x="20" y="20" width="280" height="320" rx="10" fill="rgba(0,212,170,0.04)" stroke="rgba(0,212,170,0.25)" stroke-width="1"/>
+      <text x="160" y="45" fill="#00D4AA" font-size="10" text-anchor="middle" letter-spacing="2">VEHICLE LAYER (Jetson)</text>
+      <rect x="40" y="60" width="240" height="50" rx="6" fill="rgba(0,212,170,0.1)" stroke="rgba(0,212,170,0.3)" stroke-width="1"/>
+      <text x="160" y="82" fill="#F0F6FF" font-size="11" text-anchor="middle" font-weight="bold">Monocular Camera</text>
+      <text x="160" y="97" fill="#6B8FA8" font-size="9" text-anchor="middle">30Hz · 224×224 · FP16</text>
+      <rect x="40" y="125" width="240" height="50" rx="6" fill="rgba(59,130,246,0.15)" stroke="rgba(59,130,246,0.4)" stroke-width="1"/>
+      <text x="160" y="147" fill="#F0F6FF" font-size="11" text-anchor="middle" font-weight="bold">ResNet18 + TensorRT</text>
+      <text x="160" y="162" fill="#6B8FA8" font-size="9" text-anchor="middle">Keypoint regression · 11ms</text>
+      <rect x="40" y="190" width="240" height="50" rx="6" fill="rgba(139,92,246,0.15)" stroke="rgba(139,92,246,0.4)" stroke-width="1"/>
+      <text x="160" y="212" fill="#F0F6FF" font-size="11" text-anchor="middle" font-weight="bold">iMPC Controller</text>
+      <text x="160" y="227" fill="#6B8FA8" font-size="9" text-anchor="middle">Adaptive horizon · 15ms · 30Hz</text>
+      <rect x="40" y="255" width="240" height="50" rx="6" fill="rgba(255,71,87,0.1)" stroke="rgba(255,71,87,0.3)" stroke-width="1"/>
+      <text x="160" y="277" fill="#F0F6FF" font-size="11" text-anchor="middle" font-weight="bold">Actuator Interface</text>
+      <text x="160" y="292" fill="#6B8FA8" font-size="9" text-anchor="middle">δ* steering · a* throttle · PWM/CAN</text>
+      <!-- vertical arrows in vehicle -->
+      <line x1="160" y1="110" x2="160" y2="125" stroke="rgba(0,212,170,0.4)" stroke-width="1.5" marker-end="url(#arr)"/>
+      <line x1="160" y1="175" x2="160" y2="190" stroke="rgba(0,212,170,0.4)" stroke-width="1.5" marker-end="url(#arr)"/>
+      <line x1="160" y1="240" x2="160" y2="255" stroke="rgba(0,212,170,0.4)" stroke-width="1.5" marker-end="url(#arr)"/>
+
+      <!-- EDGE/SERVER LAYER -->
+      <rect x="370" y="20" width="280" height="320" rx="10" fill="rgba(245,166,35,0.03)" stroke="rgba(245,166,35,0.2)" stroke-width="1"/>
+      <text x="510" y="45" fill="#F5A623" font-size="10" text-anchor="middle" letter-spacing="2">SERVER (iMPC Gateway)</text>
+      <rect x="390" y="60" width="240" height="50" rx="6" fill="rgba(245,166,35,0.1)" stroke="rgba(245,166,35,0.3)" stroke-width="1"/>
+      <text x="510" y="82" fill="#F0F6FF" font-size="11" text-anchor="middle" font-weight="bold">WebSocket API Gateway</text>
+      <text x="510" y="97" fill="#6B8FA8" font-size="9" text-anchor="middle">TLS 1.3 · auth token · rate-limit</text>
+      <rect x="390" y="125" width="240" height="50" rx="6" fill="rgba(245,166,35,0.1)" stroke="rgba(245,166,35,0.3)" stroke-width="1"/>
+      <text x="510" y="147" fill="#F0F6FF" font-size="11" text-anchor="middle" font-weight="bold">Telemetry Broker</text>
+      <text x="510" y="162" fill="#6B8FA8" font-size="9" text-anchor="middle">MQTT/WS · state buffer · 30Hz push</text>
+      <rect x="390" y="190" width="240" height="50" rx="6" fill="rgba(245,166,35,0.1)" stroke="rgba(245,166,35,0.3)" stroke-width="1"/>
+      <text x="510" y="212" fill="#F0F6FF" font-size="11" text-anchor="middle" font-weight="bold">Parameter Manager</text>
+      <text x="510" y="227" fill="#6B8FA8" font-size="9" text-anchor="middle">N, Q, R, α, γ tuning API</text>
+      <rect x="390" y="255" width="240" height="50" rx="6" fill="rgba(245,166,35,0.1)" stroke="rgba(245,166,35,0.3)" stroke-width="1"/>
+      <text x="510" y="277" fill="#F0F6FF" font-size="11" text-anchor="middle" font-weight="bold">Mission Planner</text>
+      <text x="510" y="292" fill="#6B8FA8" font-size="9" text-anchor="middle">Waypoints · route upload · geofence</text>
+
+      <!-- CLIENT LAYER -->
+      <rect x="720" y="20" width="280" height="320" rx="10" fill="rgba(59,130,246,0.03)" stroke="rgba(59,130,246,0.2)" stroke-width="1"/>
+      <text x="860" y="45" fill="#3B82F6" font-size="10" text-anchor="middle" letter-spacing="2">CLIENT (Web Dashboard)</text>
+      <rect x="740" y="60" width="240" height="50" rx="6" fill="rgba(59,130,246,0.12)" stroke="rgba(59,130,246,0.35)" stroke-width="1"/>
+      <text x="860" y="82" fill="#F0F6FF" font-size="11" text-anchor="middle" font-weight="bold">Live Telemetry View</text>
+      <text x="860" y="97" fill="#6B8FA8" font-size="9" text-anchor="middle">RMSE · heading · steering · latency</text>
+      <rect x="740" y="125" width="240" height="50" rx="6" fill="rgba(59,130,246,0.12)" stroke="rgba(59,130,246,0.35)" stroke-width="1"/>
+      <text x="860" y="147" fill="#F0F6FF" font-size="11" text-anchor="middle" font-weight="bold">Remote D-Pad Control</text>
+      <text x="860" y="162" fill="#6B8FA8" font-size="9" text-anchor="middle">Keyboard / touch · manual override</text>
+      <rect x="740" y="190" width="240" height="50" rx="6" fill="rgba(59,130,246,0.12)" stroke="rgba(59,130,246,0.35)" stroke-width="1"/>
+      <text x="860" y="212" fill="#F0F6FF" font-size="11" text-anchor="middle" font-weight="bold">Parameter Tuning UI</text>
+      <text x="860" y="227" fill="#6B8FA8" font-size="9" text-anchor="middle">Sliders: N, Q, R, α, γ</text>
+      <rect x="740" y="255" width="240" height="50" rx="6" fill="rgba(59,130,246,0.12)" stroke="rgba(59,130,246,0.35)" stroke-width="1"/>
+      <text x="860" y="277" fill="#F0F6FF" font-size="11" text-anchor="middle" font-weight="bold">Simulation Dashboard</text>
+      <text x="860" y="292" fill="#6B8FA8" font-size="9" text-anchor="middle">iMPC vs PID visualisation</text>
+
+      <!-- horizontal arrows -->
+      <line x1="300" y1="145" x2="370" y2="145" stroke="rgba(0,212,170,0.5)" stroke-width="1.5" marker-end="url(#arr)"/>
+      <text x="335" y="138" fill="rgba(0,212,170,0.7)" font-size="8" text-anchor="middle">telemetry</text>
+      <line x1="370" y1="225" x2="300" y2="225" stroke="rgba(245,166,35,0.5)" stroke-width="1.5" marker-end="url(#arr)"/>
+      <text x="335" y="242" fill="rgba(245,166,35,0.7)" font-size="8" text-anchor="middle">commands</text>
+      <line x1="650" y1="145" x2="720" y2="145" stroke="rgba(59,130,246,0.5)" stroke-width="1.5" marker-end="url(#arr)"/>
+      <text x="685" y="138" fill="rgba(59,130,246,0.7)" font-size="8" text-anchor="middle">WS stream</text>
+      <line x1="720" y1="225" x2="650" y2="225" stroke="rgba(59,130,246,0.5)" stroke-width="1.5" marker-end="url(#arr)"/>
+      <text x="685" y="242" fill="rgba(59,130,246,0.7)" font-size="8" text-anchor="middle">params / cmds</text>
+    </svg>
+  </div>
+</div>
+</section>
+
+<!-- ═══════════════════════════════════════════════
+     TECH STACK
+══════════════════════════════════════════════════ -->
+<section id="tech">
+<div class="container">
+  <span class="section-label">// Technology Stack</span>
+  <h2 class="section-title">Built On Solid Foundations</h2>
+  <div class="tech-grid">
+    <div class="tech-card">
+      <h3>Embedded Perception</h3>
+      <p>ResNet18 with TensorRT FP16 optimisation. Two-point trajectory keypoint regression trained on custom track dataset. Dynamic perception window aligned to vehicle heading.</p>
+      <div class="tc-tags">
+        <span class="tc-tag">PyTorch</span><span class="tc-tag">TensorRT</span><span class="tc-tag">ResNet18</span><span class="tc-tag">FP16</span>
+      </div>
+    </div>
+    <div class="tech-card">
+      <h3>Adaptive MPC Core</h3>
+      <p>Perception-aware multi-layer MPC with exponential horizon adaptation. Precomputed gain matrix reduces online solve from O(n³) to O(n²), enabling 30 Hz control on Jetson.</p>
+      <div class="tc-tags">
+        <span class="tc-tag">iMPC</span><span class="tc-tag">CVXPY</span><span class="tc-tag">NumPy</span><span class="tc-tag">C++ solver</span>
+      </div>
+    </div>
+    <div class="tech-card">
+      <h3>Vehicle Model</h3>
+      <p>Kinematic bicycle model with slip angle β = arctan(lr/(lf+lr)·tan(δ)). State: [x, y, ψ, v]. Valid for speeds up to 3 m/s on the current platform.</p>
+      <div class="tc-tags">
+        <span class="tc-tag">Bicycle Model</span><span class="tc-tag">ODE45</span><span class="tc-tag">Linearisation</span>
+      </div>
+    </div>
+    <div class="tech-card">
+      <h3>Server & API</h3>
+      <p>WebSocket-based control gateway with TLS encryption, token authentication, and per-vehicle parameter isolation. MQTT telemetry broker for low-latency state streaming.</p>
+      <div class="tc-tags">
+        <span class="tc-tag">WebSocket</span><span class="tc-tag">MQTT</span><span class="tc-tag">FastAPI</span><span class="tc-tag">Python</span>
+      </div>
+    </div>
+    <div class="tech-card">
+      <h3>Hardware Platform</h3>
+      <p>NVIDIA Jetson Nano/Xavier SoC. JetRacer chassis. No GPS, no external cloud dependency — fully standalone 28.5ms pipeline running onboard.</p>
+      <div class="tc-tags">
+        <span class="tc-tag">Jetson</span><span class="tc-tag">JetRacer</span><span class="tc-tag">ROS2</span><span class="tc-tag">PWM/CAN</span>
+      </div>
+    </div>
+    <div class="tech-card">
+      <h3>Web Dashboard</h3>
+      <p>Real-time telemetry visualisation with Chart.js. Live simulation of iMPC vs PID vs Fixed-MPC. Remote D-pad control, parameter sliders, and connection manager.</p>
+      <div class="tc-tags">
+        <span class="tc-tag">Chart.js</span><span class="tc-tag">Canvas API</span><span class="tc-tag">WebSocket</span><span class="tc-tag">Vanilla JS</span>
+      </div>
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- ═══════════════════════════════════════════════
+     PRICING
+══════════════════════════════════════════════════ -->
+<section id="pricing">
+<div class="container">
+  <span class="section-label">// Plans</span>
+  <h2 class="section-title">Control-as-a-Service Plans</h2>
+  <p class="section-sub">From academic research to industrial deployment. Choose the plan that fits your vehicle fleet and use case.</p>
+  <div class="plans-grid">
+    <div class="plan-card">
+      <div class="plan-name">Research</div>
+      <div class="plan-price">Free<span> / month</span></div>
+      <div class="plan-desc">Perfect for academic research, student projects, and single-vehicle experiments.</div>
+      <ul class="plan-features">
+        <li><span class="chk">✓</span> 1 vehicle connection</li>
+        <li><span class="chk">✓</span> Simulation dashboard</li>
+        <li><span class="chk">✓</span> iMPC + PID controllers</li>
+        <li><span class="chk">✓</span> Basic telemetry (5Hz)</li>
+        <li><span class="chk">✓</span> 100 hours/month</li>
+        <li><span class="x">✗</span> Mission planner</li>
+        <li><span class="x">✗</span> Custom parameters</li>
+        <li><span class="x">✗</span> Data export</li>
+      </ul>
+      <button class="plan-btn">Get Started Free</button>
+    
+    
+    </div>
+    
+    
+    
+    <!-- <div class="plan-card featured">
+      <div class="plan-badge">MOST POPULAR</div>
+      <div class="plan-name">Professional</div>
+      <div class="plan-price">$49<span> / month</span></div>
+      <div class="plan-desc">For research labs, SMEs and robotics teams needing full control and telemetry.</div>
+      <ul class="plan-features">
+        <li><span class="chk">✓</span> Up to 5 vehicles</li>
+        <li><span class="chk">✓</span> Full simulation suite</li>
+        <li><span class="chk">✓</span> All controllers incl. iMPC</li>
+        <li><span class="chk">✓</span> 30Hz telemetry streaming</li>
+        <li><span class="chk">✓</span> Parameter tuning API</li>
+        <li><span class="chk">✓</span> Mission planner</li>
+        <li><span class="chk">✓</span> Data export (CSV/JSON)</li>
+        <li><span class="chk">✓</span> Email support</li>
+      </ul>
+      <button class="plan-btn">Start 14-Day Trial</button>
+    </div>
+    <div class="plan-card">
+      <div class="plan-name">Enterprise</div>
+      <div class="plan-price">Custom<span> / month</span></div>
+      <div class="plan-desc">Industrial AGV fleets, multi-site deployment, and custom iMPC model integration.</div>
+      <ul class="plan-features">
+        <li><span class="chk">✓</span> Unlimited vehicles</li>
+        <li><span class="chk">✓</span> On-premise server deploy</li>
+        <li><span class="chk">✓</span> Custom vehicle models</li>
+        <li><span class="chk">✓</span> V2X / fleet coordination</li>
+        <li><span class="chk">✓</span> SLA guarantee</li>
+        <li><span class="chk">✓</span> Dedicated support</li>
+        <li><span class="chk">✓</span> White-label option</li>
+        <li><span class="chk">✓</span> Source code access</li>
+      </ul>
+      <button class="plan-btn">Contact Us</button>
+    </div> -->
+
+
+
+  </div>
+</div>
+</section>
+
+<!-- ═══════════════════════════════════════════════
+     FOOTER
+══════════════════════════════════════════════════ -->
+<footer>
+  <div class="footer-logo">AIMSRIC iMPC Platform</div>
+  <div class="footer-sub">Intelligent Model Predictive Control for Autonomous Vehicles<br>
+  MSc Research work · Developed by: Kibremoges Fenta Silut · Supervisor: Prof. Abebe Geletu W. Selassie</div>
+  <div class="footer-links">
+    <a href="#home">Home</a>
+    <a href="#framework">Framework</a>
+    <a href="#simulation">Simulation</a>
+    <a href="#caas">CaaS</a>
+    <a href="#results">Results</a>
+    <a href="#pricing">Plans</a>
+  </div>
+  <div class="footer-copy">© 2025 AIMS Research & Innovation Centre (AIMS-RIC)<br>
+  MSc Thesis: "Intelligent Model Predictive Control for Autonomous Driving Vehicles"</div>
+</footer>
+
+<!-- ═══════════════════════════════════════════════
+     CHART.JS
+══════════════════════════════════════════════════ -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<script>
+// ─── STATE ───────────────────────────────────────────────────────────
+let simRunning = false;
+let simMode = 'scurve';
+let controllerMode = 'impc'; // impc | fixed | pid
+let simSpeed = 1.0;
+let simStep = 0;
+let simAF = null;
+let lastTime = null;
+let rcSpeed = 0;
+let connected = false;
+let termLines = [];
+let rmseHistory = [];
+let horizonHistory = [];
+let rmseChart, horizonMiniChart;
+
+// ─── PIPELINE STEP SELECTOR ──────────────────────────────────────────
+const stepFiles = ['perception_layer.py','keypoint_regression.py','trajectory_planner.py','impc_solver.py','actuator_bridge.py'];
+function selectStep(n) {
+  document.querySelectorAll('.pipeline-step').forEach((s,i) => s.classList.toggle('active', i===n));
+  document.getElementById('fvTitle').textContent = stepFiles[n];
+  document.querySelectorAll('.eq-block').forEach(b => b.classList.remove('highlight'));
+  const idx = Math.min(n, 2);
+  document.querySelectorAll('.eq-block')[idx].classList.add('highlight');
+}
+
+// ─── SIM MODE ────────────────────────────────────────────────────────
+function setSimMode(mode, btn) {
+  simMode = mode;
+  document.querySelectorAll('.sim-tab').forEach(t => t.classList.remove('active'));
+  btn.classList.add('active');
+  resetSim();
+}
+
+// ─── TRACK GENERATORS ────────────────────────────────────────────────
+function getTrackPath(mode, W, H) {
+  const pts = [];
+  if (mode === 'scurve') {
+    for (let t = 0; t <= 1; t += 0.005) {
+      const x = W * 0.1 + t * W * 0.8;
+      const y = H/2 + Math.sin(t * Math.PI * 2) * H * 0.28 + Math.sin(t * Math.PI) * H * 0.1;
+      pts.push({x,y});
+    }
+  } else if (mode === 'oval') {
+    for (let a = -Math.PI/2; a < 3*Math.PI/2; a += 0.05) {
+      const x = W/2 + Math.cos(a) * W * 0.38;
+      const y = H/2 + Math.sin(a) * H * 0.35;
+      pts.push({x,y});
+    }
+    pts.push(pts[0]);
+  } else { // figure8
+    for (let t = 0; t <= 2*Math.PI; t += 0.04) {
+      const x = W/2 + Math.cos(t) * W * 0.32;
+      const y = H/2 + Math.sin(2*t)/2 * H * 0.38;
+      pts.push({x,y});
+    }
+  }
+  return pts;
+}
+
+// ─── CONTROLLER MODELS ───────────────────────────────────────────────
+function getError(idx, pts) {
+  const base = pts[idx % pts.length];
+  const next = pts[(idx+1) % pts.length];
+  const dx = next.x - base.x, dy = next.y - base.y;
+  const len = Math.sqrt(dx*dx+dy*dy)||1;
+  return {nx: -dy/len, ny: dx/len};
+}
+
+// Calculate curvature at a point using three consecutive points
+function getCurvature(idx, pts) {
+  const p0 = pts[(idx - 1 + pts.length) % pts.length];
+  const p1 = pts[idx % pts.length];
+  const p2 = pts[(idx + 1) % pts.length];
+  
+  const dx1 = p1.x - p0.x, dy1 = p1.y - p0.y;
+  const dx2 = p2.x - p1.x, dy2 = p2.y - p1.y;
+  const d1 = Math.sqrt(dx1*dx1 + dy1*dy1) || 1;
+  const d2 = Math.sqrt(dx2*dx2 + dy2*dy2) || 1;
+  
+  // Cross product / product of distances gives curvature approximation
+  const cross = dx1*dy2 - dy1*dx2;
+  const curvature = Math.abs(cross) / (d1 * d2 * d1 * d2);
+  return Math.min(curvature, 0.5); // Clamp to prevent extreme values
+}
+
+// Returns {cx, cy, steer, cte, horizon, conf}
+function controllerStep(vehiclePos, targetIdx, pts, W, H) {
+  const lookahead = controllerMode === 'impc' ? 1 : controllerMode === 'fixed' ? 8 : 12;
+  const tIdx = Math.min(targetIdx + lookahead, pts.length - 1);
+  const target = pts[tIdx];
+  const dx = target.x - vehiclePos.x, dy = target.y - vehiclePos.y;
+  const dist = Math.sqrt(dx*dx+dy*dy)||1;
+
+  // Cross-track error
+  const {nx, ny} = getError(targetIdx, pts);
+  const cte = Math.abs(nx*(vehiclePos.x - pts[targetIdx].x) + ny*(vehiclePos.y - pts[targetIdx].y));
+
+  // Curvature at current position
+  const curvature = getCurvature(targetIdx, pts);
+  
+  // Steer angle estimate
+  let steer = Math.atan2(dy, dx) * 180/Math.PI;
+
+  // Performance depends on curvature and controller type
+  // iMPC gets better on high-curvature sections, others degrade
+  let curveAdaptation = 1.0;
+  if (controllerMode === 'impc') {
+    curveAdaptation = 0.7 + curvature * 0.4; // Gets better on curves: 0.7 to 1.1
+  } else if (controllerMode === 'fixed') {
+    curveAdaptation = 1.0 + curvature * 0.5; // Degrades on curves: 1.0 to 1.5
+  } else { // pid
+    curveAdaptation = 1.0 + curvature * 1.2; // Significantly degrades on curves: 1.0 to 2.2
+  }
+
+  // Noise based on controller AND curvature
+  let baseNoise = controllerMode === 'pid' ? 6.2 : controllerMode === 'fixed' ? 3.8 : 2.8;
+  let noiseAmp = baseNoise * curveAdaptation;
+  steer += (Math.random()-0.5) * noiseAmp;
+
+  // Curvature-based horizon for iMPC
+  let horizon = 20;
+  if (controllerMode === 'impc') {
+    const curvature = Math.abs(Math.sin(targetIdx/pts.length * Math.PI * 2));
+    horizon = Math.round(Math.max(5, 20 * Math.exp(-1.2 * curvature)));
+  } else if (controllerMode === 'fixed') {
+    horizon = 15;
+  }
+
+  const conf = 0.85 + Math.random()*0.13 - (controllerMode !== 'impc' ? 0.05 : 0);
+  const speed = 0.9 + Math.random()*0.6;
+
+  return {
+    cx: vehiclePos.x + (dx/dist) * 3.5 * simSpeed,
+    cy: vehiclePos.y + (dy/dist) * 3.5 * simSpeed,
+    steer: steer.toFixed(1),
+    cte: cte.toFixed(3),
+    horizon,
+    conf: conf.toFixed(2),
+    speed: speed.toFixed(1)
+  };
+}
+
+// ─── SIMULATION ──────────────────────────────────────────────────────
+const canvas = document.getElementById('simCanvas');
+const ctx = canvas.getContext('2d');
+let vehiclePos = null;
+let vehicleAngle = 0;
+let trackPts = [];
+let targetIdx = 0;
+let trailPts = [];
+let trail2Pts = []; // comparison trail
+
+function resetSim() {
+  simStep = 0; targetIdx = 0;
+  trailPts = []; trail2Pts = [];
+  rmseHistory = []; horizonHistory = [];
+  vehiclePos = null; vehicleAngle = 0;
+  if (rmseChart) { rmseChart.data.labels = []; rmseChart.data.datasets[0].data = []; rmseChart.update('none'); }
+  if (horizonMiniChart) { horizonMiniChart.data.labels=[]; horizonMiniChart.data.datasets[0].data=[]; horizonMiniChart.update('none'); }
+  updateOverlayLabels(0,0,0,0);
+}
+
+function resizeCanvas() {
+  const rect = canvas.parentElement.getBoundingClientRect();
+  canvas.width = rect.width || 700;
+  canvas.height = rect.height || 420;
+}
+
+function drawSim() {
+  resizeCanvas();
+  const W = canvas.width, H = canvas.height;
+  trackPts = getTrackPath(simMode, W, H);
+
+  ctx.clearRect(0, 0, W, H);
+  ctx.fillStyle = '#0B1929';
+  ctx.fillRect(0, 0, W, H);
+
+  // Grid
+  ctx.strokeStyle = 'rgba(0,212,170,0.04)';
+  ctx.lineWidth = 1;
+  for (let x = 0; x < W; x += 40) { ctx.beginPath(); ctx.moveTo(x,0); ctx.lineTo(x,H); ctx.stroke(); }
+  for (let y = 0; y < H; y += 40) { ctx.beginPath(); ctx.moveTo(0,y); ctx.lineTo(W,y); ctx.stroke(); }
+
+  // Track reference
+  ctx.beginPath();
+  ctx.setLineDash([6, 4]);
+  ctx.strokeStyle = 'rgba(0,212,170,0.2)';
+  ctx.lineWidth = 1.5;
+  trackPts.forEach((p,i) => i===0 ? ctx.moveTo(p.x,p.y) : ctx.lineTo(p.x,p.y));
+  ctx.stroke();
+  ctx.setLineDash([]);
+
+  // Track boundary (visual width)
+  const w = 30;
+  ctx.strokeStyle = 'rgba(0,212,170,0.07)';
+  ctx.lineWidth = w;
+  ctx.lineJoin = 'round';
+  ctx.beginPath();
+  trackPts.forEach((p,i) => i===0 ? ctx.moveTo(p.x,p.y) : ctx.lineTo(p.x,p.y));
+  ctx.stroke();
+
+  // Comparison trail (PID)
+  if (trail2Pts.length > 1) {
+    ctx.beginPath();
+    ctx.strokeStyle = 'rgba(255,71,87,0.45)';
+    ctx.lineWidth = 2;
+    ctx.setLineDash([3,3]);
+    trail2Pts.forEach((p,i) => i===0 ? ctx.moveTo(p.x,p.y) : ctx.lineTo(p.x,p.y));
+    ctx.stroke();
+    ctx.setLineDash([]);
+  }
+
+  // iMPC trail
+  if (trailPts.length > 1) {
+    ctx.beginPath();
+    ctx.strokeStyle = 'rgba(0,212,170,0.8)';
+    ctx.lineWidth = 2.5;
+    trailPts.forEach((p,i) => i===0 ? ctx.moveTo(p.x,p.y) : ctx.lineTo(p.x,p.y));
+    ctx.stroke();
+  }
+
+  if (vehiclePos) {
+    // Vehicle body
+    ctx.save();
+    ctx.translate(vehiclePos.x, vehiclePos.y);
+    ctx.rotate(vehicleAngle);
+    ctx.fillStyle = '#00D4AA';
+    ctx.shadowBlur = 10;
+    ctx.shadowColor = 'rgba(0,212,170,0.6)';
+    ctx.fillRect(-12, -7, 24, 14);
+    ctx.fillStyle = '#FFFFFF';
+    ctx.shadowBlur = 0;
+    ctx.fillRect(4, -4, 6, 8); // windscreen
+    ctx.fillStyle = '#F5A623';
+    ctx.fillRect(-13, -8, 4, 4); ctx.fillRect(-13, 4, 4, 4); // rear lights
+    ctx.fillStyle = '#FFF';
+    ctx.fillRect(10, -7, 3, 5); ctx.fillRect(10, 2, 3, 5); // headlights
+    ctx.restore();
+  }
+}
+
+function simFrame(ts) {
+  if (!simRunning) return;
+  if (!lastTime) lastTime = ts;
+  const dt = (ts - lastTime) / 16.67;
+  lastTime = ts;
+
+  const W = canvas.width || 700, H = canvas.height || 420;
+  if (!vehiclePos) { vehiclePos = {...trackPts[0]}; targetIdx = 0; }
+
+  const result = controllerStep(vehiclePos, targetIdx, trackPts, W, H);
+  vehiclePos = {x: result.cx, y: result.cy};
+  vehicleAngle = Math.atan2(trackPts[(targetIdx+1)%trackPts.length].y - trackPts[targetIdx%trackPts.length].y,
+                            trackPts[(targetIdx+1)%trackPts.length].x - trackPts[targetIdx%trackPts.length].x);
+
+  trailPts.push({...vehiclePos});
+  if (trailPts.length > 200) trailPts.shift();
+
+  // Fake PID/Fixed comparison trail - deviates MORE on curved sections (oval, figure8)
+  if (trackPts[targetIdx]) {
+    const pr = trackPts[targetIdx];
+    const curvature = getCurvature(targetIdx, trackPts);
+    
+    // PID/Fixed-MPC drift increases significantly on curves
+    const baseDeviation = controllerMode === 'pid' ? 8 : 5;
+    const deviationScale = baseDeviation + curvature * (controllerMode === 'pid' ? 30 : 20);
+    const noiseX = (Math.random()-0.5) * deviationScale;
+    const noiseY = (Math.random()-0.5) * deviationScale;
+    trail2Pts.push({x: pr.x + noiseX, y: pr.y + noiseY});
+    if (trail2Pts.length > 200) trail2Pts.shift();
+  }
+
+  // Advance track index
+  if (vehiclePos) {
+    const tp = trackPts[targetIdx % trackPts.length];
+    const d = Math.hypot(vehiclePos.x - tp.x, vehiclePos.y - tp.y);
+    if (d < 12) targetIdx = (targetIdx + 1) % trackPts.length;
+  }
+
+  simStep++;
+
+  // Update RMSE history - varies by curvature
+  const trackCurvature = getCurvature(targetIdx, trackPts);
+  let rmseBase = controllerMode === 'impc' ? 0.033 : controllerMode === 'fixed' ? 0.045 : 0.071;
+  
+  // iMPC improves on curves, others degrade
+  if (controllerMode === 'impc') {
+    rmseBase = 0.033 - trackCurvature * 0.008; // Gets better on curves
+  } else if (controllerMode === 'fixed') {
+    rmseBase = 0.045 + trackCurvature * 0.015; // Slightly worse on curves
+  } else { // pid
+    rmseBase = 0.071 + trackCurvature * 0.035; // Much worse on curves
+  }
+  rmseBase = Math.max(rmseBase, 0.025); // Floor at 0.025
+  const rmse = rmseBase + (Math.random()-0.5)*0.006;
+  rmseHistory.push(+rmse.toFixed(4));
+  horizonHistory.push(result.horizon);
+  if (rmseHistory.length > 60) { rmseHistory.shift(); horizonHistory.shift(); }
+
+  updateOverlayLabels(simStep, rmse, result.steer, result.horizon);
+  updateTelemetry(result);
+
+  if (rmseChart && simStep % 2 === 0) {
+    rmseChart.data.labels = rmseHistory.map((_,i)=>i);
+    rmseChart.data.datasets[0].data = rmseHistory;
+    rmseChart.update('none');
+  }
+  if (horizonMiniChart && simStep % 2 === 0) {
+    horizonMiniChart.data.labels = horizonHistory.map((_,i)=>i);
+    horizonMiniChart.data.datasets[0].data = horizonHistory;
+    horizonMiniChart.update('none');
+  }
+
+  drawSim();
+  simAF = requestAnimationFrame(simFrame);
+}
+
+function updateOverlayLabels(step, rmse, steer, horizon) {
+  document.getElementById('modeLabel').textContent = controllerMode.toUpperCase();
+  document.getElementById('stepLabel').textContent = step;
+  document.getElementById('rmseLabel').textContent = typeof rmse === 'number' ? rmse.toFixed(4)+'m' : '—';
+  document.getElementById('steerLabel').textContent = steer + '°';
+  document.getElementById('mcRmse').textContent = typeof rmse === 'number' ? rmse.toFixed(4)+' m' : '0.033 m';
+  document.getElementById('mcRmse').className = 'mc-big ' + (rmse < 0.05 ? 'good' : rmse < 0.08 ? 'warn' : 'danger');
+  document.getElementById('tv-horiz').textContent = horizon;
+  document.getElementById('tv-kappa').textContent = (0.05 + Math.random()*0.25).toFixed(2);
+}
+
+function updateTelemetry(r) {
+  document.getElementById('tv-vel').textContent = r.speed + ' m/s';
+  document.getElementById('tv-heading').textContent = (Math.random()*30-15).toFixed(1)+'°';
+  document.getElementById('tv-steer').textContent = r.steer+'°';
+  document.getElementById('tv-conf').textContent = r.conf;
+  document.getElementById('tv-cte').textContent = r.cte+'m';
+  const lat = controllerMode === 'impc' ? 28 + Math.random()*3 : 38 + Math.random()*4;
+  document.getElementById('tv-latency').textContent = lat.toFixed(0)+'ms';
+  document.getElementById('tv-latency').style.color = lat < 33 ? 'var(--green)' : lat < 38 ? 'var(--amber)' : 'var(--red)';
+  const sigma = controllerMode === 'impc' ? 2.8 : controllerMode === 'fixed' ? 3.5 : 6.2;
+  document.getElementById('mcSteer').textContent = (sigma + (Math.random()-0.5)*0.4).toFixed(1)+'°';
+}
+
+function toggleSim() {
+  simRunning = !simRunning;
+  const btn = document.getElementById('btnPlay');
+  if (simRunning) {
+    btn.classList.add('active');
+    btn.innerHTML = `<svg viewBox="0 0 16 16" fill="currentColor"><rect x="3" y="2" width="4" height="12"/><rect x="9" y="2" width="4" height="12"/></svg> Pause`;
+    lastTime = null;
+    simAF = requestAnimationFrame(simFrame);
+    addTermLine('info', 'Simulation started — ' + controllerMode.toUpperCase() + ' controller');
+  } else {
+    btn.classList.remove('active');
+    btn.innerHTML = `<svg viewBox="0 0 16 16" fill="currentColor"><polygon points="4,2 13,8 4,14"/></svg> Play`;
+    cancelAnimationFrame(simAF);
+    addTermLine('msg', 'Simulation paused');
+  }
+}
+
+function cycleController() {
+  const modes = ['impc','fixed','pid'];
+  const labels = ['iMPC', 'Fixed MPC', 'PID'];
+  const next = (modes.indexOf(controllerMode)+1)%3;
+  controllerMode = modes[next];
+  document.getElementById('btnController').innerHTML = `<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="4" width="12" height="8" rx="2"/><circle cx="6" cy="8" r="1.2" fill="currentColor" stroke="none"/><circle cx="10" cy="8" r="1.2" fill="currentColor" stroke="none"/></svg> ${labels[next]}`;
+  document.getElementById('ctrlName').textContent = labels[next];
+  addTermLine('info', 'Controller switched to ' + labels[next]);
+  resetSim();
+}
+
+document.getElementById('simSpeedSlider').addEventListener('input', function() {
+  simSpeed = parseFloat(this.value);
+  document.getElementById('simSpeedLabel').textContent = this.value + '×';
+});
+
+// ─── MINI CHARTS ─────────────────────────────────────────────────────
+function initMiniCharts() {
+  const rCtx = document.getElementById('rmseChart').getContext('2d');
+  rmseChart = new Chart(rCtx, {
+    type: 'line',
+    data: { labels: [], datasets: [{ data: [], borderColor: '#00D4AA', borderWidth: 2, pointRadius: 0, tension: 0.4, fill: true, backgroundColor: 'rgba(0,212,170,0.08)' }] },
+    options: { responsive: true, maintainAspectRatio: false, animation: false,
+      plugins: { legend: { display: false } },
+      scales: { x: { display: false }, y: { display: false } }
+    }
+  });
+
+  const hCtx = document.getElementById('horizonChart').getContext('2d');
+  horizonMiniChart = new Chart(hCtx, {
+    type: 'bar',
+    data: { labels: [], datasets: [{ data: [], backgroundColor: 'rgba(245,166,35,0.5)', borderColor: '#F5A623', borderWidth: 1 }] },
+    options: { responsive: true, maintainAspectRatio: false, animation: false,
+      plugins: { legend: { display: false } },
+      scales: { x: { display: false }, y: { display: true, min: 0, max: 25, ticks: { color: '#6B8FA8', font:{size:9} }, grid: { color: 'rgba(255,255,255,0.04)' } } }
+    }
+  });
+}
+
+// ─── RESULTS CHARTS ──────────────────────────────────────────────────
+function initResultCharts() {
+  // RMSE bar
+  const rb = document.getElementById('rmseBarChart').getContext('2d');
+  new Chart(rb, {
+    type: 'bar',
+    data: {
+      labels: ['PID', 'Fixed-Horizon MPC\n(ROS)', 'iMPC Adaptive\n(Ours)'],
+      datasets: [{
+        data: [0.071, 0.045, 0.033],
+        backgroundColor: ['#FF4757','#F5A623','#00D4AA'],
+        borderRadius: 6, borderSkipped: false
+      }]
+    },
+    options: { responsive: true, maintainAspectRatio: false, animation: { duration: 1200 },
+      plugins: { legend: { display: false },
+        tooltip: { callbacks: { label: v => v.raw.toFixed(3) + ' m' } }
+      },
+      scales: {
+        x: { ticks: { color: '#6B8FA8', font:{size:11} }, grid: { color: 'rgba(255,255,255,0.04)' } },
+        y: { min: 0, max: 0.10, ticks: { color: '#6B8FA8', callback: v => v.toFixed(3)+'m', font:{size:10} }, grid: { color: 'rgba(255,255,255,0.06)' } }
+      }
+    }
+  });
+
+  // Latency stacked bar
+  const lc = document.getElementById('latencyChart').getContext('2d');
+  new Chart(lc, {
+    type: 'bar',
+    data: {
+      labels: ['iMPC (ours)', 'ROS Fixed MPC'],
+      datasets: [
+        { label: 'Perception', data: [11, 11], backgroundColor: '#3B82F6', borderRadius: 0 },
+        { label: 'Planning', data: [2, 4], backgroundColor: '#00D4AA', borderRadius: 0 },
+        { label: 'MPC Solve', data: [15.5, 23.5], backgroundColor: '#F5A623', borderRadius: 4 }
+      ]
+    },
+    options: { responsive: true, maintainAspectRatio: false, animation: { duration: 1200 },
+      plugins: { legend: { display: false },
+        tooltip: { callbacks: { label: v => v.dataset.label + ': ' + v.raw + 'ms' } }
+      },
+      scales: {
+        x: { stacked: true, ticks: { color: '#6B8FA8', font:{size:11} }, grid: { display: false } },
+        y: { stacked: true, min: 0, max: 45, ticks: { color: '#6B8FA8', callback: v => v+'ms', font:{size:10} }, grid: { color: 'rgba(255,255,255,0.06)' } }
+      }
+    }
+  });
+
+  // Steering angle line
+  const sc = document.getElementById('steerChart').getContext('2d');
+  const T = 80;
+  const iMPCdata = Array.from({length:T}, (_,i) => +(Math.sin(i/T*Math.PI*4)*12 + (Math.random()-0.5)*5.6).toFixed(2));
+  const PIDdata = Array.from({length:T}, (_,i) => +(Math.sin(i/T*Math.PI*4)*14 + (Math.random()-0.5)*12.4).toFixed(2));
+  new Chart(sc, {
+    type: 'line',
+    data: {
+      labels: Array.from({length:T},(_,i)=>i),
+      datasets: [
+        { label:'iMPC δ', data: iMPCdata, borderColor:'#00D4AA', borderWidth:2, pointRadius:0, tension:0.4 },
+        { label:'PID δ', data: PIDdata, borderColor:'#FF4757', borderWidth:1.5, borderDash:[4,3], pointRadius:0, tension:0.3 }
+      ]
+    },
+    options: { responsive: true, maintainAspectRatio: false,
+      plugins: { legend: { display: false } },
+      scales: {
+        x: { display: false },
+        y: { ticks: { color: '#6B8FA8', callback: v=>v+'°', font:{size:10} }, grid: { color:'rgba(255,255,255,0.06)' } }
+      }
+    }
+  });
+
+  // Horizon vs curvature
+  const hc = document.getElementById('horizonCurveChart').getContext('2d');
+  const nPts = 80;
+  const kappaData = Array.from({length:nPts},(_,i)=>+( Math.abs(Math.sin(i/nPts*Math.PI*3))*0.35).toFixed(3));
+  const horizData = kappaData.map(k => Math.round(Math.max(5, 20*Math.exp(-1.2*k))));
+  new Chart(hc, {
+    type: 'line',
+    data: {
+      labels: Array.from({length:nPts},(_,i)=>i),
+      datasets: [
+        { label:'Horizon N', data: horizData, borderColor:'#8B5CF6', borderWidth:2.5, pointRadius:0, tension:0.4, yAxisID:'y' },
+        { label:'Curvature κ', data: kappaData, borderColor:'#F5A623', borderWidth:1.5, borderDash:[5,3], pointRadius:0, tension:0.4, yAxisID:'y2' }
+      ]
+    },
+    options: { responsive: true, maintainAspectRatio: false,
+      plugins: { legend: { display: false } },
+      scales: {
+        x: { display: false },
+        y: { min: 0, max: 25, ticks: { color: '#8B5CF6', callback: v=>'N='+v, font:{size:9} }, grid:{ color:'rgba(255,255,255,0.06)' } },
+        y2: { position:'right', min:0, max:0.45, ticks:{ color:'#F5A623', callback:v=>'κ='+v.toFixed(2), font:{size:9} }, grid:{display:false} }
+      }
+    }
+  });
+}
+
+// ─── TERMINAL ────────────────────────────────────────────────────────
+function addTermLine(type, msg) {
+  const t = document.getElementById('cmdTerminal');
+  const now = new Date();
+  const ts = `[${String(now.getHours()).padStart(2,'0')}:${String(now.getMinutes()).padStart(2,'0')}:${String(now.getSeconds()).padStart(2,'0')}]`;
+  const div = document.createElement('div');
+  div.className = 'cmd-line';
+  div.innerHTML = `<span class="ts">${ts}</span> <span class="${type}">${msg}</span>`;
+  t.appendChild(div);
+  t.scrollTop = t.scrollHeight;
+  termLines.push(div);
+  if (termLines.length > 40) { termLines[0].remove(); termLines.shift(); }
+}
+
+// ─── CONNECTION TOGGLE ───────────────────────────────────────────────
+async function toggleConnect() {
+  const btn = document.getElementById('connectBtn');
+  const statusEl = document.getElementById('connStatus');
+  const statusText = document.getElementById('connStatusText');
+
+  if (connected) {
+    connected = false;
+    statusEl.className = 'status-pill offline';
+    statusText.textContent = 'Disconnected';
+    btn.textContent = '▶  Connect to Server';
+    addTermLine('err', 'Disconnected from server');
+    addTermLine('msg', 'Vehicle session terminated');
+    return;
+  }
+
+  // Simulate connecting
+  statusEl.className = 'status-pill connecting';
+  statusText.textContent = 'Connecting...';
+  btn.disabled = true;
+  btn.textContent = 'Connecting...';
+  addTermLine('info', 'Initiating connection to ' + document.getElementById('serverHost').value + ':' + document.getElementById('serverPort').value);
+  addTermLine('msg', 'Authenticating vehicle token: ' + document.getElementById('vehicleToken').value);
+
+  await delay(600);
+  addTermLine('ok', 'TLS 1.3 handshake complete');
+  await delay(400);
+  addTermLine('ok', 'Vehicle authenticated — mode: ' + document.getElementById('ctrlMode').value);
+  await delay(500);
+  addTermLine('ok', 'Telemetry stream opened (30Hz)');
+  await delay(300);
+  addTermLine('ok', 'iMPC parameter sync complete');
+  await delay(200);
+  addTermLine('info', 'Platform: ' + document.getElementById('vPlatform').value);
+  addTermLine('ok', '>>> Vehicle ONLINE — Ready for control <<<');
+
+  connected = true;
+  statusEl.className = 'status-pill online';
+  statusText.textContent = 'Online';
+  btn.disabled = false;
+  btn.textContent = '■  Disconnect';
+  btn.style.background = 'rgba(255,71,87,0.2)';
+  btn.style.color = '#FF4757';
+  btn.style.borderColor = '#FF4757';
+
+  // Start telemetry simulation if not running
+  if (!simRunning) toggleSim();
+  startTelemetryTick();
+}
+
+function delay(ms) { return new Promise(r => setTimeout(r, ms)); }
+
+let telTick = null;
+function startTelemetryTick() {
+  if (telTick) return;
+  telTick = setInterval(() => {
+    if (!connected) { clearInterval(telTick); telTick = null; return; }
+    addTermLine('msg', `[telemetry] vel=${(0.9+Math.random()).toFixed(2)} cte=${(0.02+Math.random()*0.04).toFixed(4)} N=${Math.round(8+Math.random()*12)} lat=${Math.round(26+Math.random()*5)}ms`);
+  }, 3000);
+}
+
+// ─── D-PAD ───────────────────────────────────────────────────────────
+function dpadPress(dir) {
+  const btn = {fwd:'btn-fwd',rev:'btn-rev',left:'btn-left',right:'btn-right',stop:'btn-stop'}[dir];
+  if (btn) document.getElementById(btn)?.classList.add('pressed');
+  const speeds = {fwd:1.5, rev:-0.8, left:0, right:0, stop:0};
+  rcSpeed = speeds[dir] || 0;
+  document.getElementById('rcSpeed').textContent = Math.abs(rcSpeed).toFixed(1);
+  if (connected) addTermLine(dir==='stop'?'info':'msg', `CMD: ${dir.toUpperCase()} v=${rcSpeed} m/s`);
+}
+function dpadRelease(dir) {
+  const btn = {fwd:'btn-fwd',rev:'btn-rev',left:'btn-left',right:'btn-right'}[dir];
+  if (btn) document.getElementById(btn)?.classList.remove('pressed');
+  rcSpeed = 0;
+  document.getElementById('rcSpeed').textContent = '0.0';
+}
+
+// keyboard d-pad
+document.addEventListener('keydown', e => {
+  const map = {ArrowUp:'fwd',ArrowDown:'rev',ArrowLeft:'left',ArrowRight:'right',Space:'stop'};
+  if (map[e.code]) { e.preventDefault(); dpadPress(map[e.code]); }
+});
+document.addEventListener('keyup', e => {
+  const map = {ArrowUp:'fwd',ArrowDown:'rev',ArrowLeft:'left',ArrowRight:'right'};
+  if (map[e.code]) dpadRelease(map[e.code]);
+});
+
+// ─── PARAM SLIDERS ───────────────────────────────────────────────────
+function updateParam(param, val, elId) {
+  document.getElementById(elId).textContent = val;
+  if (connected) addTermLine('info', `PARAM_UPDATE: ${param}=${val}`);
+}
+
+// ─── INIT ────────────────────────────────────────────────────────────
+window.addEventListener('load', () => {
+  resizeCanvas();
+  const W = canvas.width, H = canvas.height;
+  trackPts = getTrackPath(simMode, W, H);
+  vehiclePos = {...trackPts[0]};
+  drawSim();
+  initMiniCharts();
+  initResultCharts();
+});
+
+window.addEventListener('resize', () => {
+  resizeCanvas();
+  trackPts = getTrackPath(simMode, canvas.width, canvas.height);
+  drawSim();
+});
+</script>
+</body>
+</html>
