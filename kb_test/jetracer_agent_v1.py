@@ -43,7 +43,7 @@ from ultralytics import YOLO
 # CONFIGURATION
 # ============================================================
 
-CAMERA_DEVICE = "/dev/video48"
+CAMERA_DEVICE = "/dev/video49"
 
 WIDTH = 640
 HEIGHT = 480
