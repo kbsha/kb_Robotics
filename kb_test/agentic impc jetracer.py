@@ -180,7 +180,7 @@ class VehicleState:
 
 
 def lane_center_y(x: float) -> float:
-    """Lane centerline. Straight road at y=0 (swap for a curve if desired)."""
+    """Lane centerline. Straight road at y=0 (swap for a curve if desired). for center"""
     return 0.0
 
 
